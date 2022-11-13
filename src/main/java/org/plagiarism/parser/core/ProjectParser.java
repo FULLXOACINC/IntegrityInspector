@@ -1,4 +1,4 @@
-package org.plagiarism.parser;
+package org.plagiarism.parser.core;
 
 import org.plagiarism.model.Project;
 
@@ -6,13 +6,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ProjectParser {
-    private ProjectCodeParser projectCodeParser = new ProjectCodeParser();
+    private final ProjectCodeParser projectCodeParser = new ProjectCodeParser();
 
     public List<Project> parseProjectListFromRootDir(File root) throws IOException {
         List<Project> projectList = new ArrayList<>();
-        for (File file : root.listFiles()) {
+        for (File file : Objects.requireNonNull(root.listFiles())) {
             if (file.isDirectory()) {
                 String name = file.getName();
                 projectList.add(new Project(name, projectCodeParser.parseCode(file)));

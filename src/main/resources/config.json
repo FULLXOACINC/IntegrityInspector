@@ -1,0 +1,12 @@
+{
+  "analysisConfig": {
+    "projectLimit": 3,
+    "lineSimilarLimit": 4,
+    "maxLineLengthDiff": 15,
+    "minLineLength": 5,
+    "levenshteinSimilarityPercent": 0.333
+  },
+  "parseCodeConfig": {
+    "fileExtensionWhiteList": ["py","js","html","css","","","","","","","","","","","",""]
+  }
+}

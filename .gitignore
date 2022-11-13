@@ -36,3 +36,10 @@ build/
 
 checked/
 codebase/
+/.idea/
+test.*
+report.html
+
+test_project
+test_baseline_projects/*
+report_test_project.html

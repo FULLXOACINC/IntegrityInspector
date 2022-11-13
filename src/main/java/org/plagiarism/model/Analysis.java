@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Report {
-    private List<ProjectCheck> projectCheckList;
-    private List<TTT> fileCoverage;
+public class Analysis {
+    private List<FileCheck> projectChecks;
+    private List<ProjectCount> countPerProject;
 }

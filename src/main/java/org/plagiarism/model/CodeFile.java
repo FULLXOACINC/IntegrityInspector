@@ -8,10 +8,9 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class CodeFile {
-    private String project;
     private String sourceFile;
     private List<Line> code;
-    private int fileCount;
+    private int fileLineCount;
 
     public void addLine(Line line) {
         code.add(line);
