@@ -12,7 +12,6 @@ import java.util.List;
 public class PythonReader implements CodeReader {
     private static final PythonFileCommentCleaner FILE_COMMENT_CLEANER = new PythonFileCommentCleaner();
     private static final PythonLineCommentCleaner LINE_COMMENT_CLEANER = new PythonLineCommentCleaner();
-    //This constant RegEx use for remove all characters in the input string except for numbers, Latin letters,
     private static final DefaultLineCleaner LINE_CLEANER = new DefaultLineCleaner();
     private static final String PYTHON_FILE_LINE_DELIMITER = "\n";
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(PYTHON_FILE_LINE_DELIMITER);
@@ -20,8 +19,8 @@ public class PythonReader implements CodeReader {
 
 
     @Override
-    public CodeFile read(String pythonFile) throws IOException {
-        String fileContext = FILER_READER.readFileFullContext(pythonFile);
+    public CodeFile read(String file) throws IOException {
+        String fileContext = FILER_READER.readFileFullContext(file);
         String commentFilteredFileContext = FILE_COMMENT_CLEANER.removeComments(fileContext);
         List<Line> lineForCheck = lineForCheckExtractor.extractLinesForCheck(
                 commentFilteredFileContext,
@@ -29,7 +28,7 @@ public class PythonReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 x -> LINE_CLEANER.clearLine(PythonReader.LINE_COMMENT_CLEANER.removeComments(x))
         );
-        return new CodeFile(pythonFile, lineForCheck, fileContext.length());
+        return new CodeFile(file, lineForCheck, fileContext.length());
     }
 
 

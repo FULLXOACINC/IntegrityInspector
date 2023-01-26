@@ -2,58 +2,29 @@ package org.plagiarism.parser.reader.file;
 
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.model.Line;
+import org.plagiarism.parser.cleaner.line.DefaultLineCleaner;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultReader implements CodeReader {
+
+    private static final DefaultLineCleaner LINE_CLEANER = new DefaultLineCleaner();
+    private static final String PYTHON_FILE_LINE_DELIMITER = "\n";
+    private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(PYTHON_FILE_LINE_DELIMITER);
+    private static final LineForCheckExtractor lineForCheckExtractor = new LineForCheckExtractor();
+
+
     @Override
-    public CodeFile read(String pythonFile) throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader(pythonFile));
-        CodeFile codeFile = new CodeFile(pythonFile, new ArrayList<>(), 0);
-        int index = 0;
-        while (true) {
-            index++;
-            String line = reader.readLine();
-            if (line == null) {
-                break;
-            }
-            if (isStringNeedAddToCheckList(line)) {
-                codeFile.addLine(
-                        new Line(index, line, line
-                                .replace(" ", "")
-                                .toLowerCase()
-                                .replace("_", "")
-                                .replace("\u003d", "")
-                        )
-                );
-            }
-        }
-        codeFile.setFileLineCount(Math.toIntExact(index - 1));
-        return codeFile;
+    public CodeFile read(String file) throws IOException {
+        String fileContext = FILER_READER.readFileFullContext(file);
+        List<Line> lineForCheck = lineForCheckExtractor.extractLinesForCheck(
+                fileContext,
+                PYTHON_FILE_LINE_DELIMITER,
+                x -> true,
+                LINE_CLEANER::clearLine
+        );
+        return new CodeFile(file, lineForCheck, fileContext.length());
     }
 
-    private boolean isStringNeedAddToCheckList(String str) {
-        String filtered = str.replaceAll(" ", "").replaceAll("\t", "").trim();
-        if (filtered.startsWith("from") || filtered.startsWith("import") || filtered.startsWith("//") || filtered.startsWith("#") || filtered.startsWith("/*") || filtered.startsWith("*/")) {
-            return false;
-        }
-        if (filtered.isEmpty()) {
-            return false;
-        }
-        return !filtered
-                .toLowerCase()
-                .replace("{", "")
-                .replace("}", "")
-                .replace("(", "")
-                .replace(")", "")
-                .replace("[", "")
-                .replace("]", "")
-                .replace(" ", "")
-                .replace("_", "")
-                .replace("\u003d", "")
-                .isEmpty();
-    }
 }
