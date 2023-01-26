@@ -1,4 +1,4 @@
-package org.plagiarism.parser.cleaner;
+package org.plagiarism.parser.reader.file;
 
 import org.plagiarism.model.CodeFile;
 

@@ -1,13 +1,10 @@
-package org.plagiarism.parser.core;
+package org.plagiarism.parser.reader.project;
 
 import org.plagiarism.model.CodeFile;
-import org.plagiarism.model.Line;
-import org.plagiarism.parser.cleaner.CodeReader;
-import org.plagiarism.parser.cleaner.CodeReaderFactory;
+import org.plagiarism.parser.reader.file.CodeReader;
+import org.plagiarism.parser.reader.file.CodeReaderFactory;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

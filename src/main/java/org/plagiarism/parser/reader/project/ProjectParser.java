@@ -1,4 +1,4 @@
-package org.plagiarism.parser.core;
+package org.plagiarism.parser.reader.project;
 
 import org.plagiarism.model.Project;
 

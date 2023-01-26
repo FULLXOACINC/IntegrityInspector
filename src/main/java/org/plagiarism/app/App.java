@@ -5,7 +5,7 @@ import org.plagiarism.config.AppConfig;
 import org.plagiarism.config.AppConfigReader;
 import org.plagiarism.jtwig.JtwigWriter;
 import org.plagiarism.model.Project;
-import org.plagiarism.parser.core.ProjectParser;
+import org.plagiarism.parser.reader.project.ProjectParser;
 
 import java.io.File;
 import java.io.IOException;

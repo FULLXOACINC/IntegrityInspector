@@ -1,4 +1,4 @@
-package org.plagiarism.parser.cleaner;
+package org.plagiarism.parser.reader.file;
 
 import java.util.Arrays;
 import java.util.HashSet;
