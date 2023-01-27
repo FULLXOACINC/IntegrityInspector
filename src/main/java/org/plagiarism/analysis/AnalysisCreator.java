@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 import static org.plagiarism.model.ProjectCount.PROJECT_COUNT_COMPARATOR;
 
 public class AnalysisCreator {
-    private AnalysisConfig config;
-    private PlagiarismLineChecker lineChecker;
+    private final AnalysisConfig config;
+    private final PlagiarismLineChecker lineChecker;
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     private static final int SCALE = 2;
 
@@ -33,7 +33,25 @@ public class AnalysisCreator {
         List<FileCheck> filteredFileChecks = checkProject(checkProject, filteredBaselineProjects);
         analysis.setProjectChecks(filteredFileChecks);
         analysis.setCountPerProject(countsPerProject);
+
+        analysis.setTotalUniquenessPercentage(calculateTotalUniquenessPercentage(filteredFileChecks));
         return analysis;
+    }
+
+    private BigDecimal calculateTotalUniquenessPercentage(List<FileCheck> filteredFileChecks) {
+        long checkedLineCount = filteredFileChecks
+                .stream()
+                .map(x -> x.getCheckedLines().size())
+                .reduce(Integer::sum).orElse(0);
+        long matchedLineCount = filteredFileChecks
+                .stream()
+                .flatMap(x -> x.getCheckedLines().stream())
+                .filter(x -> x.getSimilarLines().isEmpty())
+                .count();
+        return BigDecimal
+                .valueOf(matchedLineCount)
+                .multiply(ONE_HUNDRED)
+                .divide(BigDecimal.valueOf(checkedLineCount), SCALE, RoundingMode.HALF_DOWN);
     }
 
     private List<LineInfo> extractSimilarLines(List<Check> list) {

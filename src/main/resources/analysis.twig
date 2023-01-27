@@ -31,12 +31,15 @@
 <div style="background:#464547;padding:5pt 2%; width: 96%">
     <span style="font-size:16.5pt;font-family:&quot;Arial Bold&quot;;color:white;">Uniqueness percentage</span>
 </div>
+<div style="background:gray;padding:5pt 2%; width: 96%">
+    <span style="font-size:15.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">Total percentage: {{ report.totalUniquenessPercentage }} %</span>
+</div>
 {% for fileCheck in report.projectChecks %}
     <div style="background:gray;padding:5pt 2%; width: 96%">
-        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">File name:{{ fileCheck.codeFileName }}</span>
+        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">File name: {{ fileCheck.codeFileName }}</span>
     </div>
     <div style="background:gray;padding:5pt 2%; width: 96%">
-        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">percentage:{{ fileCheck.uniquePresent }}%</span>
+        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">Percentage: {{ fileCheck.uniquePresent }} %</span>
     </div>
 {% endfor %}
 <div style="background:#464547;padding:5pt 2%; width: 96%">
@@ -45,10 +48,10 @@
 
 {% for fileCheck in report.projectChecks %}
     <div style="background:gray;padding:5pt 2%; width: 96%">
-        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">File name:{{ fileCheck.codeFileName }}</span>
+        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">File name: {{ fileCheck.codeFileName }}</span>
     </div>
     <div style="background:gray;padding:5pt 2%; width: 96%">
-        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">Uniqueness percentage:{{ fileCheck.uniquePresent }}%</span>
+        <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">Uniqueness percentage: {{ fileCheck.uniquePresent }} %</span>
     </div>
     {% for checkedLine in fileCheck.checkedLines %}
         <div class="myDIV" style="background:{% if checkedLine.similarLines.isEmpty %}
