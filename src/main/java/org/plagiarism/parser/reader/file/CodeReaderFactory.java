@@ -6,10 +6,11 @@ import java.util.Set;
 
 public enum CodeReaderFactory {
     PY(new PythonReader()),
+    JAVA(new JavaReader()),
     DEFAULT(new DefaultReader());
 
     private final CodeReader reader;
-    private static final Set<String> AVAILABLE_EXTENSIONS = new HashSet<>(Arrays.asList("PY"));
+    private static final Set<String> AVAILABLE_EXTENSIONS = new HashSet<>(Arrays.asList("PY","JAVA"));
 
     CodeReaderFactory(CodeReader reader) {
         this.reader = reader;
