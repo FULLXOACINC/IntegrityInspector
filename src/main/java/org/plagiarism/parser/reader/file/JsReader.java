@@ -8,7 +8,7 @@ import org.plagiarism.parser.cleaner.line.DefaultLineCleaner;
 import java.io.IOException;
 import java.util.List;
 
-public class JavaReader implements CodeReader {
+public class JsReader implements CodeReader {
     private static final CommonFileCommentCleaner FILE_COMMENT_CLEANER = new CommonFileCommentCleaner();
     private static final DefaultLineCleaner LINE_CLEANER = new DefaultLineCleaner();
     private static final String JAVA_FILE_LINE_DELIMITER = "\n";
@@ -35,7 +35,7 @@ public class JavaReader implements CodeReader {
         if (filtered.isEmpty()) {
             return false;
         }
-        return !filtered.startsWith("package") && !filtered.startsWith("import");
+        return !filtered.startsWith("import") && !filtered.startsWith("from");
     }
 
 }

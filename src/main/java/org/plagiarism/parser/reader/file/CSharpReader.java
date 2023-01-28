@@ -8,11 +8,11 @@ import org.plagiarism.parser.cleaner.line.DefaultLineCleaner;
 import java.io.IOException;
 import java.util.List;
 
-public class JavaReader implements CodeReader {
+public class CSharpReader implements CodeReader {
     private static final CommonFileCommentCleaner FILE_COMMENT_CLEANER = new CommonFileCommentCleaner();
     private static final DefaultLineCleaner LINE_CLEANER = new DefaultLineCleaner();
-    private static final String JAVA_FILE_LINE_DELIMITER = "\n";
-    private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(JAVA_FILE_LINE_DELIMITER);
+    private static final String C_SHARP_FILE_LINE_DELIMITER = "\n";
+    private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(C_SHARP_FILE_LINE_DELIMITER);
     private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
 
 
@@ -22,7 +22,7 @@ public class JavaReader implements CodeReader {
         String commentFilteredFileContext = FILE_COMMENT_CLEANER.removeComments(fileContext);
         List<Line> lineForCheck = LINE_FOR_CHECK_EXTRACTOR.extractLinesForCheck(
                 commentFilteredFileContext,
-                JAVA_FILE_LINE_DELIMITER,
+                C_SHARP_FILE_LINE_DELIMITER,
                 this::isLineNeedAddToCheckList,
                 LINE_CLEANER::clearLine
         );
@@ -35,7 +35,7 @@ public class JavaReader implements CodeReader {
         if (filtered.isEmpty()) {
             return false;
         }
-        return !filtered.startsWith("package") && !filtered.startsWith("import");
+        return !filtered.startsWith("using") && !filtered.startsWith("namespace");
     }
 
 }

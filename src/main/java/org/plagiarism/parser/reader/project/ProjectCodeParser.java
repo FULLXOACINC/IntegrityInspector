@@ -17,7 +17,7 @@ public class ProjectCodeParser {
         collectAllFiles(dir, files);
         for (String element : files) {
             String[] arr = element.split("\\.");
-            String fileExtension = arr[arr.length-1].toUpperCase();
+            String fileExtension = arr[arr.length - 1].toUpperCase();
             CodeReader reader = CodeReaderFactory.findCodeReader(fileExtension);
             result.add(reader.read(element));
         }
@@ -25,7 +25,7 @@ public class ProjectCodeParser {
     }
 
     private void collectAllFiles(File dir, List<String> list) {
-        for (final File fileEntry : Objects.requireNonNull(dir.listFiles())) {
+        for (File fileEntry : Objects.requireNonNull(dir.listFiles())) {
             if (fileEntry.isDirectory()) {
                 collectAllFiles(fileEntry, list);
             } else {

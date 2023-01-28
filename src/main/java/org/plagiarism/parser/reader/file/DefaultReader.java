@@ -12,13 +12,13 @@ public class DefaultReader implements CodeReader {
     private static final DefaultLineCleaner LINE_CLEANER = new DefaultLineCleaner();
     private static final String PYTHON_FILE_LINE_DELIMITER = "\n";
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(PYTHON_FILE_LINE_DELIMITER);
-    private static final LineForCheckExtractor lineForCheckExtractor = new LineForCheckExtractor();
+    private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
 
 
     @Override
     public CodeFile read(String file) throws IOException {
         String fileContext = FILER_READER.readFileFullContext(file);
-        List<Line> lineForCheck = lineForCheckExtractor.extractLinesForCheck(
+        List<Line> lineForCheck = LINE_FOR_CHECK_EXTRACTOR.extractLinesForCheck(
                 fileContext,
                 PYTHON_FILE_LINE_DELIMITER,
                 x -> true,

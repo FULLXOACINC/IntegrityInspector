@@ -7,10 +7,18 @@ import java.util.Set;
 public enum CodeReaderFactory {
     PY(new PythonReader()),
     JAVA(new JavaReader()),
+    CPP(new CppReader()),
+    C(new CppReader()),
+    JS(new JsReader()),
+    TS(new JsReader()),
+    CS(new CSharpReader()),
+    IPYNB(new IpynbReader()),
     DEFAULT(new DefaultReader());
 
     private final CodeReader reader;
-    private static final Set<String> AVAILABLE_EXTENSIONS = new HashSet<>(Arrays.asList("PY","JAVA"));
+    private static final Set<String> AVAILABLE_EXTENSIONS = new HashSet<>(
+            Arrays.asList("PY", "JAVA", "CPP", "C", "JS", "TS", "CS", "IPYNB")
+    );
 
     CodeReaderFactory(CodeReader reader) {
         this.reader = reader;
