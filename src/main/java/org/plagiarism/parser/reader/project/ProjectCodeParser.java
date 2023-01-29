@@ -1,5 +1,6 @@
 package org.plagiarism.parser.reader.project;
 
+import org.plagiarism.config.ParserConfig;
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.parser.reader.file.CodeReader;
 import org.plagiarism.parser.reader.file.CodeReaderFactory;
@@ -11,14 +12,20 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProjectCodeParser {
+    private final CodeReaderFactory codeReaderFactory;
+
+    public ProjectCodeParser(ParserConfig parseCodeConfig) {
+        codeReaderFactory = new CodeReaderFactory(parseCodeConfig.getAdditionalFileExtensions());
+    }
+
     public List<CodeFile> parseCode(File dir) throws IOException {
         List<String> files = new ArrayList<>();
         List<CodeFile> result = new ArrayList<>();
         collectAllFiles(dir, files);
         for (String element : files) {
             String[] arr = element.split("\\.");
-            String fileExtension = arr[arr.length - 1].toUpperCase();
-            CodeReader reader = CodeReaderFactory.findCodeReader(fileExtension);
+            String fileExtension = arr[arr.length - 1];
+            CodeReader reader = codeReaderFactory.findCodeReader(fileExtension);
             result.add(reader.read(element));
         }
         return result;

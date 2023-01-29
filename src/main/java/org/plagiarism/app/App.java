@@ -20,9 +20,9 @@ public class App {
 
         File checkFolder = new File(args[0]);
         File folder = new File(args[1]);
-        ProjectParser parser = new ProjectParser();
         AppConfigReader configReader = new AppConfigReader();
         AppConfig config = configReader.read();
+        ProjectParser parser = new ProjectParser(config.getParseCodeConfig());
         List<Project> baselineProjects = parser.parseProjectListFromRootDir(folder);
         Project checkProject = parser.parseProject(checkFolder);
         AnalysisCreator analysisCreator = new AnalysisCreator(config.getAnalysisConfig());

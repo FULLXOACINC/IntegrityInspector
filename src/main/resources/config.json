@@ -7,6 +7,28 @@
     "levenshteinSimilarityPercent": 0.333
   },
   "parseCodeConfig": {
-    "fileExtensionWhiteList": ["py","js","html","css","","","","","","","","","","","",""]
+    "additionalFileExtensions": [
+      {
+        "extensions": [
+          "kt",
+          "kts",
+          "ktm"
+        ],
+        "existingExtension": "java"
+      },
+      {
+        "extensions": [
+          "cpp",
+          "h"
+        ],
+        "existingExtension": "c"
+      },
+      {
+        "extensions": [
+          "ts"
+        ],
+        "existingExtension": "js"
+      }
+    ]
   }
 }

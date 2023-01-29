@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParserConfig {
-    private List<AdditionalFileExtensionConfig> additionalFileExtensions;
+public class AdditionalFileExtensionConfig {
+    private Set<String> extensions;
+    private String existingExtension;
 }

@@ -1,35 +1,37 @@
 package org.plagiarism.parser.reader.file;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import org.plagiarism.config.AdditionalFileExtensionConfig;
 
-public enum CodeReaderFactory {
-    PY(new PythonReader()),
-    JAVA(new JavaReader()),
-    CPP(new CppReader()),
-    C(new CppReader()),
-    JS(new JsReader()),
-    TS(new JsReader()),
-    CS(new CSharpReader()),
-    IPYNB(new IpynbReader()),
-    DEFAULT(new DefaultReader());
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-    private final CodeReader reader;
-    private static final Set<String> AVAILABLE_EXTENSIONS = new HashSet<>(
-            Arrays.asList("PY", "JAVA", "CPP", "C", "JS", "TS", "CS", "IPYNB")
-    );
+public class CodeReaderFactory {
+    private static final DefaultReader DEFAULT = new DefaultReader();
+    private final Map<String, CodeReader> readerMap;
+    private final List<AdditionalFileExtensionConfig> additionalFileExtensions;
 
-    CodeReaderFactory(CodeReader reader) {
-        this.reader = reader;
+    public CodeReaderFactory(List<AdditionalFileExtensionConfig> additionalFileExtensions) {
+        readerMap = new HashMap<>();
+        readerMap.put("py", new PythonReader());
+        readerMap.put("java", new JavaReader());
+        readerMap.put("c", new CppReader());
+        readerMap.put("js", new JsReader());
+        readerMap.put("cs", new CSharpReader());
+        readerMap.put("ipynb", new IpynbReader());
+        this.additionalFileExtensions = additionalFileExtensions;
     }
 
-    public static CodeReader findCodeReader(String fileExtension) {
-        if (AVAILABLE_EXTENSIONS.contains(fileExtension)) {
-            return CodeReaderFactory.valueOf(fileExtension).reader;
-        } else {
-            return CodeReaderFactory.DEFAULT.reader;
-        }
 
+    public CodeReader findCodeReader(String fileExtension) {
+        if (readerMap.containsKey(fileExtension)) {
+            return readerMap.get(fileExtension);
+        }
+        for (AdditionalFileExtensionConfig config : additionalFileExtensions) {
+            if (config.getExtensions().contains(fileExtension)) {
+                return readerMap.getOrDefault(config.getExistingExtension(), DEFAULT);
+            }
+        }
+        return DEFAULT;
     }
 }

@@ -1,5 +1,6 @@
 package org.plagiarism.parser.reader.project;
 
+import org.plagiarism.config.ParserConfig;
 import org.plagiarism.model.Project;
 
 import java.io.File;
@@ -9,7 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class ProjectParser {
-    private final ProjectCodeParser projectCodeParser = new ProjectCodeParser();
+    private final ProjectCodeParser projectCodeParser;
+
+    public ProjectParser(ParserConfig parseCodeConfig) {
+        projectCodeParser = new ProjectCodeParser(parseCodeConfig);
+    }
 
     public List<Project> parseProjectListFromRootDir(File root) throws IOException {
         List<Project> projectList = new ArrayList<>();
