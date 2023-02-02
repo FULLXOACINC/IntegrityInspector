@@ -1,4 +1,4 @@
-package org.plagiarism.cheker;
+package org.plagiarism.checker;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.text.similarity.CosineDistance;

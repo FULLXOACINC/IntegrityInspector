@@ -1,36 +1,32 @@
 package org.plagiarism.analysis;
 
-import org.plagiarism.cheker.PlagiarismLineChecker;
+import lombok.AllArgsConstructor;
+import org.plagiarism.checker.ProjectChecker;
 import org.plagiarism.config.AnalysisConfig;
 import org.plagiarism.model.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static org.plagiarism.model.ProjectCount.PROJECT_COUNT_COMPARATOR;
 
+@AllArgsConstructor
 public class AnalysisCreator {
-    private final AnalysisConfig config;
-    private final PlagiarismLineChecker lineChecker;
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     private static final int SCALE = 2;
-
-    public AnalysisCreator(AnalysisConfig config) {
-        this.config = config;
-        this.lineChecker = new PlagiarismLineChecker(config);
-    }
+    private final AnalysisConfig config;
 
     public Analysis create(Project checkProject, List<Project> baselineProjects) {
         Analysis analysis = new Analysis();
-        List<FileCheck> fileChecks = checkProject(checkProject, baselineProjects);
+        MultithreadingProjectChecker multithreadingProjectChecker = new MultithreadingProjectChecker(config, config.getThreadsCount());
+        ProjectChecker projectChecker = new ProjectChecker(config);
+
+        List<FileCheck> fileChecks = multithreadingProjectChecker.process(checkProject, baselineProjects);
         List<ProjectCount> countsPerProject = extractCountsPerProject(fileChecks, config.getProjectLimit());
         List<Project> filteredBaselineProjects = limitBaselineProjectList(countsPerProject, baselineProjects);
-        List<FileCheck> filteredFileChecks = checkProject(checkProject, filteredBaselineProjects);
+        List<FileCheck> filteredFileChecks = projectChecker.checkProject(checkProject, filteredBaselineProjects);
         analysis.setProjectChecks(filteredFileChecks);
         analysis.setCountPerProject(countsPerProject);
 
@@ -54,43 +50,6 @@ public class AnalysisCreator {
                 .divide(BigDecimal.valueOf(checkedLineCount), SCALE, RoundingMode.HALF_DOWN);
     }
 
-    private List<LineInfo> extractSimilarLines(List<Check> list) {
-        return list
-                .stream()
-                .filter(distinctByKey(x -> x.getBaseline().getContent().trim() + x.getBaselineProject()))
-                .sorted(Check.CHECK_COMPARATOR)
-                .limit(config.getLineSimilarLimit())
-                .map(x -> new LineInfo(x.getBaselineProject(), x.getBaselineCodeFile(), x.getLevenshteinDistance(), x.getCosineDistance(), x.getJaccardDistance(), x.getBaseline()))
-                .sorted(LineInfo.LINE_INFO_COMPARATOR)
-                .collect(Collectors.toList());
-    }
-
-    private List<FileCheck> checkProject(Project checkProject, List<Project> baselineProjects) {
-        List<FileCheck> fileChecks = new ArrayList<>();
-        for (CodeFile codeFile : checkProject.getCodeFileList()) {
-            fileChecks.add(checkFile(codeFile, baselineProjects));
-        }
-        return fileChecks;
-    }
-
-    private FileCheck checkFile(CodeFile codeFile, List<Project> baselineProjects) {
-        double plagiarismLineCount = 0.0;
-        List<CheckLine> checkedLines = new ArrayList<>();
-        for (Line checkedLine : codeFile.getCode()) {
-            List<Check> checks = compareLineWithBaselineProjects(checkedLine, baselineProjects);
-            List<LineInfo> similarLines = extractSimilarLines(checks);
-            if (!similarLines.isEmpty()) {
-                plagiarismLineCount++;
-            }
-            checkedLines.add(new CheckLine(checkedLine, similarLines));
-        }
-
-        BigDecimal uniquePresent = BigDecimal
-                .valueOf(plagiarismLineCount)
-                .multiply(ONE_HUNDRED)
-                .divide(BigDecimal.valueOf(codeFile.getCode().size()), SCALE, RoundingMode.HALF_DOWN);
-        return new FileCheck(codeFile.getSourceFile(), checkedLines, ONE_HUNDRED.subtract(uniquePresent));
-    }
 
     private List<ProjectCount> extractCountsPerProject(List<FileCheck> fileChecks, int limit) {
         Map<String, Integer> map = extractMapWithCounts(fileChecks);
@@ -133,18 +92,5 @@ public class AnalysisCreator {
                 .collect(Collectors.toList());
     }
 
-    private List<Check> compareLineWithBaselineProjects(Line checkedLine, List<Project> baselineProjects) {
-        List<Check> list = new ArrayList<>();
-        for (Project baselineProject : baselineProjects) {
-            for (CodeFile baselineCodeFile : baselineProject.getCodeFileList()) {
-                list.addAll(lineChecker.check(checkedLine, baselineCodeFile, baselineProject.getName(), baselineCodeFile.getSourceFile()));
-            }
-        }
-        return list;
-    }
 
-    private <T> Predicate<T> distinctByKey(Function<? super T, ?> keyExtractor) {
-        Set<Object> seen = ConcurrentHashMap.newKeySet();
-        return t -> seen.add(keyExtractor.apply(t));
-    }
 }

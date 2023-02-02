@@ -4,7 +4,8 @@
     "lineSimilarLimit": 4,
     "maxLineLengthDiff": 15,
     "minLineLength": 5,
-    "levenshteinSimilarityPercent": 0.333
+    "levenshteinSimilarityPercent": 0.333,
+    "threadsCount": 8
   },
   "parseCodeConfig": {
     "additionalFileExtensions": [
