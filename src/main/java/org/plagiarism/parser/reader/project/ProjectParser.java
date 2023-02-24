@@ -16,7 +16,8 @@ public class ProjectParser {
         projectCodeParser = new ProjectCodeParser(parseCodeConfig);
     }
 
-    public List<Project> parseProjectListFromRootDir(File root) throws IOException {
+    public List<Project> parseProjectListFromRootDir(String dirPath) throws IOException {
+        File root = new File(dirPath);
         List<Project> projectList = new ArrayList<>();
         for (File file : Objects.requireNonNull(root.listFiles())) {
             if (file.isDirectory()) {

@@ -1,7 +1,6 @@
 package org.plagiarism.checker;
 
 import lombok.AllArgsConstructor;
-import org.plagiarism.checker.PlagiarismLineChecker;
 import org.plagiarism.config.AnalysisConfig;
 import org.plagiarism.model.*;
 
