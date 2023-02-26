@@ -15,6 +15,7 @@ import static org.plagiarism.model.ProjectCount.PROJECT_COUNT_COMPARATOR;
 @AllArgsConstructor
 public class AnalysisCreator {
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
+    private static final BigDecimal ZERO = BigDecimal.valueOf(0).setScale(2, RoundingMode.HALF_DOWN);
     private static final int SCALE = 2;
     private final AnalysisConfig config;
 
@@ -44,6 +45,9 @@ public class AnalysisCreator {
                 .flatMap(x -> x.getCheckedLines().stream())
                 .filter(x -> x.getSimilarLines().isEmpty())
                 .count();
+        if (checkedLineCount == 0 || matchedLineCount == 0) {
+            return ZERO;
+        }
         return BigDecimal
                 .valueOf(matchedLineCount)
                 .multiply(ONE_HUNDRED)

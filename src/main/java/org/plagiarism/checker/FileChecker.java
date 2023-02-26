@@ -33,11 +33,22 @@ public class FileChecker {
             checkedLines.add(new CheckLine(checkedLine, similarLines));
         }
 
-        BigDecimal uniquePresent = BigDecimal
+        BigDecimal uniquePresent = calculateUniquePresent(codeFile, plagiarismLineCount);
+        return new FileCheck(codeFile.getSourceFile(), checkedLines, uniquePresent);
+    }
+
+    private BigDecimal calculateUniquePresent(CodeFile codeFile, double plagiarismLineCount) {
+        if (codeFile.getCode().size() == 0) {
+            return ONE_HUNDRED;
+        }
+        BigDecimal totalLineCount = BigDecimal.valueOf(codeFile.getCode().size());
+        BigDecimal nonUniquePresent = BigDecimal
                 .valueOf(plagiarismLineCount)
                 .multiply(ONE_HUNDRED)
-                .divide(BigDecimal.valueOf(codeFile.getCode().size()), SCALE, RoundingMode.HALF_DOWN);
-        return new FileCheck(codeFile.getSourceFile(), checkedLines, ONE_HUNDRED.subtract(uniquePresent));
+                .divide(totalLineCount, SCALE, RoundingMode.HALF_DOWN);
+
+        return ONE_HUNDRED.subtract(nonUniquePresent);
+
     }
 
     private List<LineInfo> extractSimilarLines(List<Check> list) {
