@@ -19,6 +19,8 @@
         <slf4j.version>2.0.6</slf4j.version>
         <gson.version>2.10.1</gson.version>
         <jcommander.version>1.82</jcommander.version>
+        <antlr4.version>4.12.0</antlr4.version>
+        <zhang-shasha-java.version>1.01</zhang-shasha-java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -61,6 +63,16 @@
             <artifactId>jcommander</artifactId>
             <version>${jcommander.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>${antlr4.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tmatek</groupId>
+            <artifactId>zhang-shasha-java</artifactId>
+            <version>${zhang-shasha-java.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -94,6 +106,18 @@
                     </execution>
                 </executions>
 
+            </plugin>
+            <plugin>
+                <groupId>org.antlr</groupId>
+                <artifactId>antlr4-maven-plugin</artifactId>
+                <version>${antlr4.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>antlr4</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
