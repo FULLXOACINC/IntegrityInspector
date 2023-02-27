@@ -14,6 +14,7 @@ public class CppReader implements CodeReader {
     private static final String JAVA_FILE_LINE_DELIMITER = "\n";
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(JAVA_FILE_LINE_DELIMITER);
     private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
+    private static final String LANGUAGE = "C++";
 
 
     @Override
@@ -26,7 +27,7 @@ public class CppReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 LINE_CLEANER::clearLine
         );
-        return new CodeFile(file, lineForCheck, fileContext.length(), null, "C++");
+        return new CodeFile(file, lineForCheck, fileContext.length(), null, LANGUAGE);
     }
 
 

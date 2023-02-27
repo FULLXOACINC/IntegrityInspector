@@ -19,6 +19,7 @@ public class PythonReader implements CodeReader {
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(PYTHON_FILE_LINE_DELIMITER);
     private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
     private static final PythonCodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new PythonCodeTreeNodeConverter();
+    private static final String LANGUAGE = "Python";
 
 
     @Override
@@ -36,7 +37,7 @@ public class PythonReader implements CodeReader {
                 x -> LINE_CLEANER.clearLine(PythonReader.LINE_COMMENT_CLEANER.removeComments(x))
         );
         CodeTree codeTree = CODE_TREE_NODE_CONVERTER.convertToCodeTreeNode(commentFilteredFileContext);
-        return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, "Python");
+        return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, LANGUAGE);
     }
 
 

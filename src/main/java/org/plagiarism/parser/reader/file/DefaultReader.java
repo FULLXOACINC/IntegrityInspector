@@ -13,6 +13,7 @@ public class DefaultReader implements CodeReader {
     private static final String PYTHON_FILE_LINE_DELIMITER = "\n";
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(PYTHON_FILE_LINE_DELIMITER);
     private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
+    private static final String LANGUAGE = "TEXT";
 
 
     @Override
@@ -24,7 +25,7 @@ public class DefaultReader implements CodeReader {
                 x -> true,
                 LINE_CLEANER::clearLine
         );
-        return new CodeFile(file, lineForCheck, fileContext.length(), null, "TEXT");
+        return new CodeFile(file, lineForCheck, fileContext.length(), null, LANGUAGE);
     }
 
 }
