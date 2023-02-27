@@ -1,5 +1,7 @@
 package org.plagiarism.parser.reader.file;
 
+import org.plagiarism.antlr.CodeTree;
+import org.plagiarism.antlr.python.PythonCodeTreeNodeConverter;
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.model.Line;
 import org.plagiarism.parser.cleaner.file.PythonFileCommentCleaner;
@@ -16,6 +18,7 @@ public class PythonReader implements CodeReader {
     private static final String PYTHON_FILE_LINE_DELIMITER = "\n";
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(PYTHON_FILE_LINE_DELIMITER);
     private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
+    private static final PythonCodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new PythonCodeTreeNodeConverter();
 
 
     @Override
@@ -32,7 +35,8 @@ public class PythonReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 x -> LINE_CLEANER.clearLine(PythonReader.LINE_COMMENT_CLEANER.removeComments(x))
         );
-        return new CodeFile(file, lineForCheck, fileContext.length());
+        CodeTree codeTree = CODE_TREE_NODE_CONVERTER.convertToCodeTreeNode(commentFilteredFileContext);
+        return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, "Python");
     }
 
 

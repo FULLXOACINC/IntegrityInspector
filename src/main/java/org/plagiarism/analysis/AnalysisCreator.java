@@ -1,9 +1,14 @@
 package org.plagiarism.analysis;
 
 import lombok.AllArgsConstructor;
+import org.plagiarism.checker.FileStringChecker;
+import org.plagiarism.checker.PlagiarismLineChecker;
 import org.plagiarism.checker.ProjectChecker;
 import org.plagiarism.config.AnalysisConfig;
 import org.plagiarism.model.*;
+import org.plagiarism.model.filecheker.FileFullCheck;
+import org.plagiarism.model.filecheker.FileStringCheck;
+import org.plagiarism.model.filecheker.FileTreeCheck;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,6 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.plagiarism.model.ProjectCount.PROJECT_COUNT_COMPARATOR;
+import static org.plagiarism.model.TreeSimilarity.TREE_SCORE_COMPARATOR;
 
 @AllArgsConstructor
 public class AnalysisCreator {
@@ -22,25 +28,39 @@ public class AnalysisCreator {
     public Analysis create(Project checkProject, List<Project> baselineProjects) {
         Analysis analysis = new Analysis();
         MultithreadingProjectChecker multithreadingProjectChecker = new MultithreadingProjectChecker(config, config.getThreadsCount());
-        ProjectChecker projectChecker = new ProjectChecker(config);
-
-        List<FileCheck> fileChecks = multithreadingProjectChecker.process(checkProject, baselineProjects);
-        List<ProjectCount> countsPerProject = extractCountsPerProject(fileChecks, config.getProjectLimit());
+        List<FileFullCheck> fileFullChecks = multithreadingProjectChecker.process(checkProject, baselineProjects);
+        List<ProjectCount> countsPerProject = extractCountsPerProject(fileFullChecks, config.getProjectLimit());
         List<Project> filteredBaselineProjects = limitBaselineProjectList(countsPerProject, baselineProjects);
-        List<FileCheck> filteredFileChecks = projectChecker.checkProject(checkProject, filteredBaselineProjects);
-        analysis.setProjectChecks(filteredFileChecks);
-        analysis.setCountPerProject(countsPerProject);
 
-        analysis.setTotalUniquenessPercentage(calculateTotalUniquenessPercentage(filteredFileChecks));
+        List<FileTreeCheck> projectTreeChecks = convertToFileTreeCheckList(fileFullChecks);
+        List<FileTreeCheck> limitedProjectTreeChecks = limitTreeCheck(projectTreeChecks, config.getProjectLimit());
+
+
+        List<FileStringCheck> filteredFileStringChecks = processFileStringChecks(checkProject, filteredBaselineProjects);
+        BigDecimal totalUniquenessPercentage = calculateTotalUniquenessPercentage(filteredFileStringChecks);
+
+        analysis.setProjectStringChecks(filteredFileStringChecks);
+        analysis.setCountPerProject(countsPerProject);
+        analysis.setTotalUniquenessPercentage(totalUniquenessPercentage);
+        analysis.setProjectTreeChecks(limitedProjectTreeChecks);
+
         return analysis;
     }
 
-    private BigDecimal calculateTotalUniquenessPercentage(List<FileCheck> filteredFileChecks) {
-        long checkedLineCount = filteredFileChecks
+    private List<FileStringCheck> processFileStringChecks(Project checkProject, List<Project> filteredBaselineProjects) {
+        PlagiarismLineChecker plagiarismLineChecker = new PlagiarismLineChecker(config);
+        FileStringChecker fileStringChecker = new FileStringChecker(plagiarismLineChecker, config);
+        ProjectChecker<FileStringCheck, FileStringChecker> stringProjectChecker = new ProjectChecker<>(config, fileStringChecker);
+
+        return stringProjectChecker.checkProject(checkProject, filteredBaselineProjects);
+    }
+
+    private BigDecimal calculateTotalUniquenessPercentage(List<FileStringCheck> filteredFileStringChecks) {
+        long checkedLineCount = filteredFileStringChecks
                 .stream()
                 .map(x -> x.getCheckedLines().size())
                 .reduce(Integer::sum).orElse(0);
-        long matchedLineCount = filteredFileChecks
+        long matchedLineCount = filteredFileStringChecks
                 .stream()
                 .flatMap(x -> x.getCheckedLines().stream())
                 .filter(x -> x.getSimilarLines().isEmpty())
@@ -55,8 +75,8 @@ public class AnalysisCreator {
     }
 
 
-    private List<ProjectCount> extractCountsPerProject(List<FileCheck> fileChecks, int limit) {
-        Map<String, Integer> map = extractMapWithCounts(fileChecks);
+    private List<ProjectCount> extractCountsPerProject(List<FileFullCheck> fileFullChecks, int limit) {
+        Map<String, Integer> map = extractMapWithCounts(fileFullChecks);
         List<ProjectCount> result = new ArrayList<>();
 
         for (Map.Entry<String, Integer> entry : map.entrySet()) {
@@ -69,9 +89,9 @@ public class AnalysisCreator {
                 .collect(Collectors.toList());
     }
 
-    private Map<String, Integer> extractMapWithCounts(List<FileCheck> fileChecks) {
+    private Map<String, Integer> extractMapWithCounts(List<FileFullCheck> fileFullChecks) {
         Map<String, Integer> map = new HashMap<>();
-        for (FileCheck file : fileChecks) {
+        for (FileFullCheck file : fileFullChecks) {
             for (CheckLine checkLine : file.getCheckedLines()) {
                 for (LineInfo similarLine : checkLine.getSimilarLines()) {
                     if (!map.containsKey(similarLine.getProject())) {
@@ -94,6 +114,28 @@ public class AnalysisCreator {
                 .stream()
                 .filter(x -> topNSimilarProjects.contains(x.getName()))
                 .collect(Collectors.toList());
+    }
+
+    private List<FileTreeCheck> convertToFileTreeCheckList(List<FileFullCheck> fileFullChecks) {
+        return fileFullChecks
+                .stream()
+                .map(x -> new FileTreeCheck(x.getCodeFileName(), x.getCodeTreeSimilarityList()))
+                .collect(Collectors.toList());
+    }
+
+    private List<FileTreeCheck> limitTreeCheck(List<FileTreeCheck> checks, int limit) {
+        return checks
+                .stream()
+                .map(x -> new FileTreeCheck(
+                        x.getCodeFileName(),
+                        x.getCodeTreeSimilarityList()
+                                .stream()
+                                .sorted(TREE_SCORE_COMPARATOR)
+                                .limit(limit)
+                                .collect(Collectors.toList())
+                ))
+                .collect(Collectors.toList());
+
     }
 
 

@@ -8,39 +8,39 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class CodeTreeNode implements TreeNode {
+public class CodeTree implements TreeNode {
 
-    private String label;
+    private final String label;
 
-    private List<CodeTreeNode> children = new ArrayList<>();
+    private final List<CodeTree> children = new ArrayList<>();
 
-    private CodeTreeNode parent;
+    private CodeTree parent;
 
-    public void setParent(CodeTreeNode parent) {
+    public void setParent(CodeTree parent) {
         this.parent = parent;
     }
 
-    public CodeTreeNode(String label) {
+    public CodeTree(String label) {
         this.label = label;
     }
 
     @Override
-    public List<CodeTreeNode> getChildren() {
+    public List<CodeTree> getChildren() {
         return this.children;
     }
 
     @Override
-    public CodeTreeNode getParent() {
+    public CodeTree getParent() {
         return this.parent;
     }
 
     @Override
     public int positionOfChild(TreeNode treeNode) {
-        if (treeNode instanceof CodeTreeNode) {
-            CodeTreeNode codeTreeNode = (CodeTreeNode) treeNode;
+        if (treeNode instanceof CodeTree) {
+            CodeTree codeTree = (CodeTree) treeNode;
             int index = 0;
-            for (CodeTreeNode ch : this.children) {
-                if (ch.equals(codeTreeNode)) {
+            for (CodeTree ch : this.children) {
+                if (ch.equals(codeTree)) {
                     return index;
                 }
                 index++;
@@ -57,7 +57,7 @@ public class CodeTreeNode implements TreeNode {
                 return 1;
 
             default:
-                return this.label.equals(((CodeTreeNode) other).label) ? 0 : 1;
+                return this.label.equals(((CodeTree) other).label) ? 0 : 1;
         }
     }
 
@@ -65,7 +65,7 @@ public class CodeTreeNode implements TreeNode {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CodeTreeNode that = (CodeTreeNode) o;
+        CodeTree that = (CodeTree) o;
         return Objects.equals(label, that.label) && Objects.equals(children, that.children) && Objects.equals(parent, that.parent);
     }
 

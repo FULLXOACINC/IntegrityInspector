@@ -1,22 +1,18 @@
 package org.plagiarism.antlr.python.gen;
 
-import org.antlr.v4.runtime.*;
-import java.util.Stack;
+import org.antlr.v4.runtime.Parser;
+import org.antlr.v4.runtime.TokenStream;
 
-public abstract class Python3ParserBase extends Parser
-{
-    protected Python3ParserBase(TokenStream input)
-    {
+public abstract class Python3ParserBase extends Parser {
+    protected Python3ParserBase(TokenStream input) {
         super(input);
     }
 
-    public boolean CannotBePlusMinus()
-    {
+    public boolean CannotBePlusMinus() {
         return true;
     }
 
-    public boolean CannotBeDotLpEq()
-    {
+    public boolean CannotBeDotLpEq() {
         return true;
     }
 }

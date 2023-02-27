@@ -2,6 +2,7 @@ package org.plagiarism.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.plagiarism.antlr.CodeTree;
 
 import java.util.List;
 
@@ -11,8 +12,6 @@ public class CodeFile {
     private String sourceFile;
     private List<Line> code;
     private int fileLineCount;
-
-    public void addLine(Line line) {
-        code.add(line);
-    }
+    private CodeTree codeTree;
+    private String language;
 }

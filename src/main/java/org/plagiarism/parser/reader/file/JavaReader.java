@@ -26,7 +26,7 @@ public class JavaReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 LINE_CLEANER::clearLine
         );
-        return new CodeFile(file, lineForCheck, fileContext.length());
+        return new CodeFile(file, lineForCheck, fileContext.length(), null, "Java");
     }
 
 

@@ -3,14 +3,14 @@ package org.plagiarism.antlr;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-public class CodeTreeNodeConverter {
+public class CodeTreeConverter {
 
-    public CodeTreeNode convertCodeTreeNode(ParseTree tree) {
+    public CodeTree convertCodeTreeNode(ParseTree tree) {
         if (tree instanceof ParserRuleContext) {
             ParserRuleContext ctx = (ParserRuleContext) tree;
-            CodeTreeNode node = new CodeTreeNode(ctx.getText());
+            CodeTree node = new CodeTree(ctx.getText());
             for (int i = 0; i < ctx.getChildCount(); i++) {
-                CodeTreeNode child = convertCodeTreeNode(ctx.getChild(i));
+                CodeTree child = convertCodeTreeNode(ctx.getChild(i));
                 if (child == null) {
                     return node;
                 }

@@ -2,8 +2,8 @@ package org.plagiarism.analysis;
 
 import lombok.AllArgsConstructor;
 import org.plagiarism.config.AnalysisConfig;
-import org.plagiarism.model.FileCheck;
 import org.plagiarism.model.Project;
+import org.plagiarism.model.filecheker.FileFullCheck;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +18,18 @@ public class MultithreadingProjectChecker {
     private final int nThreads;
 
 
-    public List<FileCheck> process(Project checkProject, List<Project> list) {
+    public List<FileFullCheck> process(Project checkProject, List<Project> list) {
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
-        List<Future<List<FileCheck>>> futures = new ArrayList<>();
-        List<FileCheck> result = new ArrayList<>();
+        List<Future<List<FileFullCheck>>> futures = new ArrayList<>();
+        List<FileFullCheck> result = new ArrayList<>();
 
-        List<List<Project>> chunkedBaseLineProject = extractChunkBaseLineProjects(checkProject, list, executorService, futures);
+        List<List<Project>> chunkedBaseLineProject = extractChunkBaseLineProjects(list);
 
         for (List<Project> chunk : chunkedBaseLineProject) {
-            Future<List<FileCheck>> future = executorService.submit(new AnalysisTask(config, chunk, checkProject));
+            Future<List<FileFullCheck>> future = executorService.submit(new AnalysisTask(config, chunk, checkProject));
             futures.add(future);
         }
-        for (Future<List<FileCheck>> future : futures) {
+        for (Future<List<FileFullCheck>> future : futures) {
             try {
                 result.addAll(future.get());
             } catch (InterruptedException | ExecutionException e) {
@@ -42,7 +42,7 @@ public class MultithreadingProjectChecker {
 
     }
 
-    private List<List<Project>> extractChunkBaseLineProjects(Project checkProject, List<Project> list, ExecutorService executorService, List<Future<List<FileCheck>>> futures) {
+    private List<List<Project>> extractChunkBaseLineProjects(List<Project> list) {
         List<List<Project>> chunkedBaseLineProject = new ArrayList<>();
         int chunkSize = list.size() / nThreads;
         for (int i = 0; i < nThreads; i++) {
@@ -52,7 +52,9 @@ public class MultithreadingProjectChecker {
                 end = list.size();
             }
             List<Project> chunk = list.subList(start, end);
-            chunkedBaseLineProject.add(chunk);
+            if (!chunk.isEmpty()) {
+                chunkedBaseLineProject.add(chunk);
+            }
         }
         return chunkedBaseLineProject;
     }

@@ -15,6 +15,8 @@ import java.util.List;
 
 public class App {
 
+    public static final String PLAGIARISM_CHECKER = "PlagiarismChecker";
+
     public static void main(String[] args) throws IOException {
 
         AppParameters parameters = new AppParameters();
@@ -30,8 +32,8 @@ public class App {
         AppConfigReader configReader = new AppConfigReader();
         AppConfig config = configReader.readBasedOnParameters(parameters);
         ProjectParser parser = new ProjectParser(config.getParseCodeConfig());
-        List<Project> baselineProjects = parser.parseProjectListFromRootDir(parameters.getBaseLineProjectDir());
         Project checkProject = parser.parseProject(checkFolder);
+        List<Project> baselineProjects = parser.parseProjectListFromRootDir(parameters.getBaseLineProjectDir());
         AnalysisCreator analysisCreator = new AnalysisCreator(config.getAnalysisConfig());
         JtwigWriter writer = new JtwigWriter();
         Analysis analysis = analysisCreator.create(checkProject, baselineProjects);
@@ -41,7 +43,7 @@ public class App {
 
     private static JCommander initAppParameters(AppParameters parameters) {
         return JCommander.newBuilder()
-                .programName("PlagiarismChecker")
+                .programName(PLAGIARISM_CHECKER)
                 .addObject(parameters)
                 .build();
     }

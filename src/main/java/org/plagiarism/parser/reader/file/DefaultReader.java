@@ -24,7 +24,7 @@ public class DefaultReader implements CodeReader {
                 x -> true,
                 LINE_CLEANER::clearLine
         );
-        return new CodeFile(file, lineForCheck, fileContext.length());
+        return new CodeFile(file, lineForCheck, fileContext.length(), null, "TEXT");
     }
 
 }
