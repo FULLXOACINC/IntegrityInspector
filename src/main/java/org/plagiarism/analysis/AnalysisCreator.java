@@ -124,17 +124,20 @@ public class AnalysisCreator {
     }
 
     private List<FileTreeCheck> limitTreeCheck(List<FileTreeCheck> checks, int limit) {
-        return checks
+        List<FileTreeCheck> result = new ArrayList<>();
+        Map<String, List<FileTreeCheck>> fileCheckMap = checks
                 .stream()
-                .map(x -> new FileTreeCheck(
-                        x.getCodeFileName(),
-                        x.getCodeTreeSimilarityList()
-                                .stream()
-                                .sorted(TREE_SCORE_COMPARATOR)
-                                .limit(limit)
-                                .collect(Collectors.toList())
-                ))
-                .collect(Collectors.toList());
+                .collect(Collectors.groupingBy(FileTreeCheck::getCodeFileName));
+        for (Map.Entry<String, List<FileTreeCheck>> checkForFile : fileCheckMap.entrySet()) {
+            List<TreeSimilarity> filteredTreeSimilarityList = checkForFile.getValue()
+                    .stream()
+                    .flatMap(x -> x.getCodeTreeSimilarityList().stream())
+                    .sorted(TREE_SCORE_COMPARATOR)
+                    .limit(limit)
+                    .collect(Collectors.toList());
+            result.add(new FileTreeCheck(checkForFile.getKey(), filteredTreeSimilarityList));
+        }
+        return result;
 
     }
 

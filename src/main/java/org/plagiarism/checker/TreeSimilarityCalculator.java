@@ -7,7 +7,7 @@ public class TreeSimilarityCalculator {
 
     public int calculateTreeSimilarity(CodeTree firstTree, CodeTree secondTree) {
         if (firstTree == null || secondTree == null) {
-            return 9999;
+            return Integer.MAX_VALUE;
         }
         return TreeDistance.treeDistanceZhangShasha(firstTree, secondTree);
     }
