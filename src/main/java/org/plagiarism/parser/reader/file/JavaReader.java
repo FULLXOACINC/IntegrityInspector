@@ -1,6 +1,8 @@
 package org.plagiarism.parser.reader.file;
 
-import org.plagiarism.antlr.CodeTree;
+import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.core.CodeTreeNodeConverter;
+import org.plagiarism.antlr.core.CodeTreeUtil;
 import org.plagiarism.antlr.java.JavaCodeTreeNodeConverter;
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.model.Line;
@@ -16,7 +18,7 @@ public class JavaReader implements CodeReader {
     private static final String JAVA_FILE_LINE_DELIMITER = "\n";
     private static final DefaultCodeFileReader FILER_READER = new DefaultCodeFileReader(JAVA_FILE_LINE_DELIMITER);
     private static final LineForCheckExtractor LINE_FOR_CHECK_EXTRACTOR = new LineForCheckExtractor();
-    private static final JavaCodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new JavaCodeTreeNodeConverter();
+    private static final CodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new JavaCodeTreeNodeConverter();
     private static final String LANGUAGE = "Java";
 
 
@@ -30,7 +32,7 @@ public class JavaReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 LINE_CLEANER::clearLine
         );
-        CodeTree codeTree = CODE_TREE_NODE_CONVERTER.convertToCodeTreeNode(commentFilteredFileContext);
+        CodeTree codeTree = CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
         return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, LANGUAGE);
     }
 

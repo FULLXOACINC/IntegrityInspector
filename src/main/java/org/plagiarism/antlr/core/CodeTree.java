@@ -1,4 +1,4 @@
-package org.plagiarism.antlr;
+package org.plagiarism.antlr.core;
 
 import com.github.tmatek.zhangshasha.TreeNode;
 import com.github.tmatek.zhangshasha.TreeOperation;

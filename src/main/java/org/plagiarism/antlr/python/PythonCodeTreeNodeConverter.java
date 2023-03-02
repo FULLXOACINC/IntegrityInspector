@@ -4,15 +4,16 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.plagiarism.antlr.CodeTree;
-import org.plagiarism.antlr.CodeTreeConverter;
+import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.core.CodeTreeConverter;
+import org.plagiarism.antlr.core.CodeTreeNodeConverter;
 import org.plagiarism.antlr.python.gen.Python3Lexer;
 import org.plagiarism.antlr.python.gen.Python3Parser;
 
-public class PythonCodeTreeNodeConverter {
+public class PythonCodeTreeNodeConverter implements CodeTreeNodeConverter {
     private static final CodeTreeConverter CONVERTER = new CodeTreeConverter();
 
-
+    @Override
     public CodeTree convertToCodeTreeNode(String content) {
         CharStream charStream = CharStreams.fromString(content);
         Python3Lexer lexer = new Python3Lexer(charStream);

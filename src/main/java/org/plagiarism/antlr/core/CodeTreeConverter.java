@@ -1,4 +1,4 @@
-package org.plagiarism.antlr;
+package org.plagiarism.antlr.core;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
