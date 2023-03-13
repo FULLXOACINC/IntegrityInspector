@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import lombok.EqualsAndHashCode;
 import org.plagiarism.model.CodeFile;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+@EqualsAndHashCode
 public class IpynbReader extends PythonReader {
     private static final String CELLS = "cells";
     private static final String CELL_TYPE = "cell_type";
@@ -24,7 +26,7 @@ public class IpynbReader extends PythonReader {
         return super.convertToCodeFile(file, ipynbCodeFileContent);
     }
 
-    private String readIpynbCodeFile(String file) throws IOException {
+    public String readIpynbCodeFile(String file) throws IOException {
         InputStream inputStream = Files.newInputStream(Paths.get(file));
         JsonObject root = new Gson().fromJson(new InputStreamReader(inputStream), JsonObject.class);
         StringBuilder fileContent = new StringBuilder();

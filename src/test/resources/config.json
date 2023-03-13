@@ -1,0 +1,35 @@
+{
+  "analysisConfig": {
+    "projectLimit": 1,
+    "lineSimilarLimit": 2,
+    "maxLineLengthDiff": 3,
+    "minLineLength": 4,
+    "levenshteinSimilarityPercent": 5.0,
+    "threadsCount": 6
+  },
+  "parseCodeConfig": {
+    "additionalFileExtensions": [
+      {
+        "extensions": [
+          "extensions 6 1",
+          "extensions 6 2",
+          "extensions 6 3"
+        ],
+        "existingExtension": "6"
+      },
+      {
+        "extensions": [
+          "extensions 7 1",
+          "extensions 7 2"
+        ],
+        "existingExtension": "7"
+      },
+      {
+        "extensions": [
+          "extensions 8 1"
+        ],
+        "existingExtension": "8"
+      }
+    ]
+  }
+}

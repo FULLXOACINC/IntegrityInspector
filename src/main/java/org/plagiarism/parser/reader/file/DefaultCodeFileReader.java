@@ -1,14 +1,14 @@
 package org.plagiarism.parser.reader.file;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-@Data
 @AllArgsConstructor
+@EqualsAndHashCode
 public class DefaultCodeFileReader {
     private String lineDelimiter;
 

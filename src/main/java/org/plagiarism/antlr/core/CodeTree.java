@@ -73,4 +73,12 @@ public class CodeTree implements TreeNode {
     public int hashCode() {
         return Objects.hash(label, children, parent);
     }
+
+    @Override
+    public String toString() {
+        return "\n{\n" +
+                "'" + label + '\'' +
+                ",\n children=" + children +
+                '}';
+    }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CodeReaderFactory {
-    private static final DefaultReader DEFAULT = new DefaultReader();
+    private static final CodeReader DEFAULT = new DefaultReader();
     private final Map<String, CodeReader> readerMap;
     private final List<AdditionalFileExtensionConfig> additionalFileExtensions;
 

@@ -21,8 +21,8 @@ public class AppConfigReader {
         return new Gson().fromJson(reader, AppConfig.class);
     }
 
-    public AppConfig read(String file) throws IOException {
-        InputStream inputStream = Files.newInputStream(Paths.get(file));
+    public AppConfig read(String filePath) throws IOException {
+        InputStream inputStream = Files.newInputStream(Paths.get(filePath));
         Reader reader = new InputStreamReader(inputStream);
         return new Gson().fromJson(reader, AppConfig.class);
     }
