@@ -10,7 +10,7 @@ import java.util.Objects;
 
 public class CodeTree implements TreeNode {
 
-    private final String label;
+    private final Integer state;
 
     private final List<CodeTree> children = new ArrayList<>();
 
@@ -20,8 +20,8 @@ public class CodeTree implements TreeNode {
         this.parent = parent;
     }
 
-    public CodeTree(String label) {
-        this.label = label;
+    public CodeTree(Integer state) {
+        this.state = state;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class CodeTree implements TreeNode {
                 return 1;
 
             default:
-                return this.label.equals(((CodeTree) other).label) ? 0 : 1;
+                return this.state.equals(((CodeTree) other).state) ? 0 : 1;
         }
     }
 
@@ -66,18 +66,23 @@ public class CodeTree implements TreeNode {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CodeTree that = (CodeTree) o;
-        return Objects.equals(label, that.label) && Objects.equals(children, that.children) && Objects.equals(parent, that.parent);
+        Integer thisParentState = parent != null ? parent.state : null;
+        Integer thatParentState = that.parent != null ? that.parent.state : null;
+        return Objects.equals(state, that.state) &&
+                Objects.equals(children, that.children) &&
+                Objects.equals(thisParentState, thatParentState);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(label, children, parent);
+        return Objects.hash(state, children, parent.state);
     }
 
     @Override
     public String toString() {
         return "\n{\n" +
-                "'" + label + '\'' +
+                " parent state='" + (parent != null ? parent.state : "null") + '\'' +
+                ", state='" + state + '\'' +
                 ",\n children=" + children +
                 '}';
     }

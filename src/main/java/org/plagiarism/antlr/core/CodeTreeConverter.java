@@ -8,9 +8,9 @@ public class CodeTreeConverter {
     public CodeTree convertCodeTreeNode(ParseTree tree) {
         if (tree instanceof ParserRuleContext) {
             ParserRuleContext ctx = (ParserRuleContext) tree;
-            CodeTree node = new CodeTree(ctx.getText());
-            for (int i = 0; i < ctx.getChildCount(); i++) {
-                CodeTree child = convertCodeTreeNode(ctx.getChild(i));
+            CodeTree node = new CodeTree(ctx.invokingState);
+            for (int index = 0; index < ctx.getChildCount(); index++) {
+                CodeTree child = convertCodeTreeNode(ctx.getChild(index));
                 if (child == null) {
                     return node;
                 }
@@ -18,8 +18,12 @@ public class CodeTreeConverter {
                 child.setParent(node);
             }
             return node;
-        } else {
-            return null;
         }
+        //TODO without comments, the analysis is too deep and it is impossible to wait for the result
+//        if (tree instanceof TerminalNode) {
+//            TerminalNode terminalNode = (TerminalNode) tree;
+//            return new CodeTree(terminalNode.getText());
+//        }
+        return null;
     }
 }

@@ -29,7 +29,7 @@ public class DefaultReader implements CodeReader {
                 x -> true,
                 LINE_CLEANER::cleanLine
         );
-        return new CodeFile(file, lineForCheck, fileContext.length(), new CodeTree("DEFAULT"), LANGUAGE);
+        return new CodeFile(file, lineForCheck, fileContext.length(), new CodeTree(-1), LANGUAGE);
     }
 
 }

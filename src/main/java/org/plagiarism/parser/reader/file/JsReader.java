@@ -32,7 +32,7 @@ public class JsReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 LINE_CLEANER::cleanLine
         );
-        return new CodeFile(file, lineForCheck, fileContext.length(), new CodeTree("DEFAULT"), LANGUAGE);
+        return new CodeFile(file, lineForCheck, fileContext.length(), new CodeTree(-1), LANGUAGE);
     }
 
 

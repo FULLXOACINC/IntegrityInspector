@@ -13,7 +13,7 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = true)
 public class IpynbReader extends PythonReader {
     private static final String CELLS = "cells";
     private static final String CELL_TYPE = "cell_type";
