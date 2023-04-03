@@ -2,8 +2,9 @@ package org.plagiarism.antlr.core;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.plagiarism.antlr.model.CodeTree;
 
-public class CodeTreeConverter {
+public class CodeTreeConverterImpl implements CodeTreeConverter {
 
     public CodeTree convertCodeTreeNode(ParseTree tree) {
         if (tree instanceof ParserRuleContext) {

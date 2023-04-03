@@ -5,15 +5,24 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import org.plagiarism.antlr.core.CodeTree;
 import org.plagiarism.antlr.core.CodeTreeConverter;
+import org.plagiarism.antlr.core.CodeTreeConverterImpl;
 import org.plagiarism.antlr.core.CodeTreeNodeConverter;
 import org.plagiarism.antlr.java.gen.JavaLexer;
 import org.plagiarism.antlr.java.gen.JavaParser;
 import org.plagiarism.antlr.java.gen.JavaParserBaseListener;
+import org.plagiarism.antlr.model.CodeTree;
 
 public class JavaCodeTreeNodeConverter implements CodeTreeNodeConverter {
-    private static final CodeTreeConverter CONVERTER = new CodeTreeConverter();
+    private final CodeTreeConverter codeTreeConverter;
+
+    public JavaCodeTreeNodeConverter() {
+        codeTreeConverter = new CodeTreeConverterImpl();
+    }
+
+    JavaCodeTreeNodeConverter(CodeTreeConverter codeTreeConverter) {
+        this.codeTreeConverter = codeTreeConverter;
+    }
 
     @Override
     public CodeTree convertToCodeTreeNode(String content) {
@@ -24,6 +33,6 @@ public class JavaCodeTreeNodeConverter implements CodeTreeNodeConverter {
         ParseTreeWalker walker = new ParseTreeWalker();
         JavaParserBaseListener listener = new JavaParserBaseListener();
         walker.walk(listener, tree);
-        return CONVERTER.convertCodeTreeNode(tree);
+        return codeTreeConverter.convertCodeTreeNode(tree);
     }
 }

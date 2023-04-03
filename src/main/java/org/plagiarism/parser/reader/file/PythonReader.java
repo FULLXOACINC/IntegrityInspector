@@ -1,9 +1,9 @@
 package org.plagiarism.parser.reader.file;
 
 import lombok.EqualsAndHashCode;
-import org.plagiarism.antlr.core.CodeTree;
 import org.plagiarism.antlr.core.CodeTreeNodeConverter;
 import org.plagiarism.antlr.core.CodeTreeUtil;
+import org.plagiarism.antlr.model.CodeTree;
 import org.plagiarism.antlr.python.PythonCodeTreeNodeConverter;
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.model.Line;

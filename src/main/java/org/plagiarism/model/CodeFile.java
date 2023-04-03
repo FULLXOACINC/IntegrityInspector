@@ -2,7 +2,7 @@ package org.plagiarism.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.model.CodeTree;
 
 import java.util.List;
 

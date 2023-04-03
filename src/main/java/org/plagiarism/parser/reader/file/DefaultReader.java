@@ -1,7 +1,7 @@
 package org.plagiarism.parser.reader.file;
 
 import lombok.EqualsAndHashCode;
-import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.model.CodeTree;
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.model.Line;
 import org.plagiarism.parser.cleaner.line.DefaultLineCleaner;

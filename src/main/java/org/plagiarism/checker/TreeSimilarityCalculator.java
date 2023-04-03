@@ -1,7 +1,7 @@
 package org.plagiarism.checker;
 
 import com.github.tmatek.zhangshasha.TreeDistance;
-import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.model.CodeTree;
 
 public class TreeSimilarityCalculator {
 

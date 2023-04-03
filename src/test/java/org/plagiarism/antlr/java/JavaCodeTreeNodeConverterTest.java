@@ -1,7 +1,17 @@
 package org.plagiarism.antlr.java;
 
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.Trees;
 import org.junit.Test;
-import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.model.CodeTree;
+import org.plagiarism.antlr.core.CodeTreeConverter;
+import org.plagiarism.antlr.java.gen.JavaLexer;
+import org.plagiarism.antlr.java.gen.JavaParser;
+import org.plagiarism.antlr.java.gen.JavaParserBaseListener;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,18 +24,24 @@ public class JavaCodeTreeNodeConverterTest {
                     "}";
 
     @Test
-    public void readPositiveTest() {
-        CodeTree ch3 = new CodeTree(299);
-        CodeTree ch2 = new CodeTree(293);
-        CodeTree ch1 = new CodeTree(261);
-        ch1.getChildren().add(ch2);
-        ch1.getChildren().add(ch3);
-        CodeTree expected = new CodeTree(-1);
-        expected.getChildren().add(ch1);
-        ch3.setParent(ch1);
-        ch2.setParent(ch1);
-        ch1.setParent(expected);
-        CodeTree actual = new JavaCodeTreeNodeConverter().convertToCodeTreeNode(code);
-        assertEquals(expected, actual);
+    public void convertToCodeTreeNodePositiveTest() {
+        CharStream charStream = CharStreams.fromString(code);
+        JavaLexer lexer = new JavaLexer(charStream);
+        JavaParser parser = new JavaParser(new CommonTokenStream(lexer));
+        ParseTree tree = parser.compilationUnit();
+        ParseTreeWalker walker = new ParseTreeWalker();
+        JavaParserBaseListener listener = new JavaParserBaseListener();
+        walker.walk(listener, tree);
+
+        CodeTreeConverter codeTreeConverter = param -> {
+            String tree1String = Trees.toStringTree(param);
+            String tree2String = Trees.toStringTree(tree);
+            if(tree2String.equals(tree1String)){
+                return new CodeTree(42);
+            }
+            return null;
+        };
+        CodeTree actual = new JavaCodeTreeNodeConverter(codeTreeConverter).convertToCodeTreeNode(code);
+        assertEquals(new CodeTree(42), actual);
     }
 }

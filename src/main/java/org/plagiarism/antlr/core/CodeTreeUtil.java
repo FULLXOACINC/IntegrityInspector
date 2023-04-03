@@ -1,5 +1,6 @@
 package org.plagiarism.antlr.core;
 
+import org.plagiarism.antlr.model.CodeTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

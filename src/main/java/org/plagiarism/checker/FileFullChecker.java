@@ -1,6 +1,6 @@
 package org.plagiarism.checker;
 
-import org.plagiarism.antlr.core.CodeTree;
+import org.plagiarism.antlr.model.CodeTree;
 import org.plagiarism.config.AnalysisConfig;
 import org.plagiarism.model.CodeFile;
 import org.plagiarism.model.Project;
