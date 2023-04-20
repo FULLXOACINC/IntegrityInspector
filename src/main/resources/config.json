@@ -8,6 +8,7 @@
     "threadsCount": 8
   },
   "parseCodeConfig": {
+    "isNeedParseTree": false,
     "additionalFileExtensions": [
       {
         "extensions": [

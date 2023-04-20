@@ -20,6 +20,10 @@ public class IpynbReader extends PythonReader {
     private static final String CODE = "code";
     private static final String SOURCE = "source";
 
+    public IpynbReader(Boolean isNeedParseTree) {
+        super(isNeedParseTree);
+    }
+
     @Override
     public CodeFile read(String file) throws IOException {
         String ipynbCodeFileContent = readIpynbCodeFile(file);

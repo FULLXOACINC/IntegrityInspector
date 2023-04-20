@@ -15,14 +15,14 @@ import static org.junit.Assert.assertEquals;
 
 public class CodeReaderFactoryTest {
     private CodeReaderFactory factory;
-    private CodeReader expected = new PythonReader();
+    private CodeReader expected = new PythonReader(false);
 
     {
         Set<String> set6 = new HashSet<>();
 
         set6.add("py_test");
         AdditionalFileExtensionConfig extension6 = new AdditionalFileExtensionConfig(set6, "py");
-        factory = new CodeReaderFactory(Arrays.asList(extension6));
+        factory = new CodeReaderFactory(Arrays.asList(extension6), false);
     }
 
     @Test

@@ -27,6 +27,12 @@ public class PythonReader implements CodeReader {
     private static final CodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new PythonCodeTreeNodeConverter();
     private static final String LANGUAGE = "Python";
 
+    private final Boolean isNeedParseTree;
+
+    public PythonReader(Boolean isNeedParseTree) {
+        this.isNeedParseTree = isNeedParseTree;
+    }
+
 
     @Override
     public CodeFile read(String file) throws IOException {
@@ -42,7 +48,12 @@ public class PythonReader implements CodeReader {
                 this::isLineNeedAddToCheckList,
                 x -> LINE_CLEANER.cleanLine(PythonReader.LINE_COMMENT_CLEANER.removeComments(x))
         );
-        CodeTree codeTree = CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
+
+        CodeTree codeTree = new CodeTree(-1);
+        if (isNeedParseTree) {
+            CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
+        }
+
         return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, LANGUAGE);
     }
 

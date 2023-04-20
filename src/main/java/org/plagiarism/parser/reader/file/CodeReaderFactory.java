@@ -11,14 +11,14 @@ public class CodeReaderFactory {
     private final Map<String, CodeReader> readerMap;
     private final List<AdditionalFileExtensionConfig> additionalFileExtensions;
 
-    public CodeReaderFactory(List<AdditionalFileExtensionConfig> additionalFileExtensions) {
+    public CodeReaderFactory(List<AdditionalFileExtensionConfig> additionalFileExtensions, Boolean isNeedParseTree) {
         readerMap = new HashMap<>();
-        readerMap.put("py", new PythonReader());
-        readerMap.put("java", new JavaReader());
+        readerMap.put("py", new PythonReader(isNeedParseTree));
+        readerMap.put("java", new JavaReader(isNeedParseTree));
         readerMap.put("c", new CppReader());
         readerMap.put("js", new JsReader());
         readerMap.put("cs", new CSharpReader());
-        readerMap.put("ipynb", new IpynbReader());
+        readerMap.put("ipynb", new IpynbReader(isNeedParseTree));
         this.additionalFileExtensions = additionalFileExtensions;
     }
 

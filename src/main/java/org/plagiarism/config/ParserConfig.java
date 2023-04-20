@@ -12,5 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode
 public class ParserConfig {
+    private Boolean isNeedParseTree;
     private List<AdditionalFileExtensionConfig> additionalFileExtensions;
 }

@@ -46,7 +46,7 @@ public class AppConfigReaderTest {
         additionalFileExtensions.add(extension8);
 
         AnalysisConfig analysisConfig = new AnalysisConfig(1, 2, 3, 4, 5.0, 6);
-        ParserConfig parseCodeConfig = new ParserConfig(additionalFileExtensions);
+        ParserConfig parseCodeConfig = new ParserConfig(false, additionalFileExtensions);
 
         expected = new AppConfig(analysisConfig, parseCodeConfig);
     }
