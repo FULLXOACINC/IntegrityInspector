@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.plagiarism.antlr.model.CodeTree;
 
 public class CodeTreeConverterImpl implements CodeTreeConverter {
-
+    @Override
     public CodeTree convertCodeTreeNode(ParseTree tree) {
         if (tree instanceof ParserRuleContext) {
             ParserRuleContext ctx = (ParserRuleContext) tree;
