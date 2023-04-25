@@ -15,5 +15,5 @@ public class AnalysisConfig {
     private int maxLineLengthDiff;
     private int minLineLength;
     private double levenshteinSimilarityPercent;
-    private int threadsCount;
+    private MultithreadingConfig multithreadingConfig;
 }

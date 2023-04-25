@@ -34,17 +34,22 @@ public class App {
 
         AppConfigReader configReader = new AppConfigReader();
         AppConfig config = configReader.readBasedOnParameters(parameters);
-        ProjectParser parser = new ProjectParser(config.getParseCodeConfig());
+
+        AppCoreComponentsFactory appCoreComponentsFactory = new AppCoreComponentsFactory();
+        AppCoreComponents appCoreComponents = appCoreComponentsFactory.createAppCoreComponents(config);
+
+        ProjectParser parser = appCoreComponents.getProjectParser();
         LOG.info("Parsing check project ...");
         Project checkProject = parser.parseProject(checkFolder);
         LOG.info("Parsing baseline projects ...");
         List<Project> baselineProjects = parser.parseProjectListFromRootDir(parameters.getBaseLineProjectDir());
-        AnalysisCreator analysisCreator = new AnalysisCreator(config.getAnalysisConfig());
-        JtwigWriter writer = new JtwigWriter();
         LOG.info("Analysis in progress ...");
+
+        AnalysisCreator analysisCreator = appCoreComponents.getAnalysisCreator();
         Analysis analysis = analysisCreator.create(checkProject, baselineProjects);
         LOG.info("Generating report ...");
-        writer.write(analysis, checkFolder.getName());
+        JtwigWriter writer = new JtwigWriter();
+        writer.write(analysis, checkFolder.getName(), appCoreComponents.getReportTemplate());
 
     }
 

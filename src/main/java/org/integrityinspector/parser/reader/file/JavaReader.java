@@ -25,10 +25,10 @@ public class JavaReader implements CodeReader {
     private static final CodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new JavaCodeTreeNodeConverter();
     private static final String LANGUAGE = "Java";
 
-    private final Boolean isNeedParseTree;
+    private final Boolean needParseTree;
 
-    public JavaReader(Boolean isNeedParseTree) {
-        this.isNeedParseTree = isNeedParseTree;
+    public JavaReader(Boolean needParseTree) {
+        this.needParseTree = needParseTree;
     }
 
     @Override
@@ -42,8 +42,8 @@ public class JavaReader implements CodeReader {
                 LINE_CLEANER::cleanLine
         );
         CodeTree codeTree = new CodeTree(-1);
-        if (isNeedParseTree) {
-            CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
+        if (needParseTree) {
+            codeTree = CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
         }
 
         return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, LANGUAGE);

@@ -1,9 +1,8 @@
 package org.integrityinspector.checker;
 
 import lombok.AllArgsConstructor;
-import org.integrityinspector.config.AnalysisConfig;
 import org.integrityinspector.model.*;
-import org.integrityinspector.model.filecheker.FileStringCheck;
+import org.integrityinspector.model.filecheker.FileCheck;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,19 +15,19 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
-public class FileStringChecker implements FileChecker<FileStringCheck> {
+public class FileStringChecker implements FileChecker<FileCheck> {
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     private static final int SCALE = 2;
     private final PlagiarismLineChecker lineChecker;
-    private final AnalysisConfig config;
+    private final int lineSimilarLimit;
 
 
-    public FileStringCheck checkFile(CodeFile codeFile, List<Project> baselineProjects) {
+    public FileCheck checkFile(CodeFile codeFile, List<Project> baselineProjects) {
         double plagiarismLineCount = 0.0;
         List<CheckLine> checkedLines = new ArrayList<>();
         for (Line checkedLine : codeFile.getCode()) {
             List<Check> checks = compareLineWithBaselineProjects(checkedLine, baselineProjects);
-            List<LineInfo> similarLines = extractSimilarLines(checks);
+            List<LineInfo> similarLines = extractSimilarLines(checks, lineSimilarLimit);
             if (!similarLines.isEmpty()) {
                 plagiarismLineCount++;
             }
@@ -37,7 +36,7 @@ public class FileStringChecker implements FileChecker<FileStringCheck> {
 
         BigDecimal uniqueStringPresent = calculateUniqueStringPresent(codeFile, plagiarismLineCount);
 
-        return new FileStringCheck(codeFile.getSourceFile(), checkedLines, uniqueStringPresent);
+        return new FileCheck(codeFile.getSourceFile(), checkedLines, uniqueStringPresent);
     }
 
     private BigDecimal calculateUniqueStringPresent(CodeFile codeFile, double plagiarismLineCount) {
@@ -54,12 +53,12 @@ public class FileStringChecker implements FileChecker<FileStringCheck> {
 
     }
 
-    private List<LineInfo> extractSimilarLines(List<Check> list) {
+    private List<LineInfo> extractSimilarLines(List<Check> list, int lineSimilarLimit) {
         return list
                 .stream()
                 .filter(distinctByKey(x -> x.getBaseline().getContent().trim() + x.getBaselineProject()))
                 .sorted(Check.CHECK_COMPARATOR)
-                .limit(config.getLineSimilarLimit())
+                .limit(lineSimilarLimit)
                 .map(x -> new LineInfo(x.getBaselineProject(), x.getBaselineCodeFile(), x.getLevenshteinDistance(), x.getCosineDistance(), x.getJaccardDistance(), x.getBaseline()))
                 .sorted(LineInfo.LINE_INFO_COMPARATOR)
                 .collect(Collectors.toList());

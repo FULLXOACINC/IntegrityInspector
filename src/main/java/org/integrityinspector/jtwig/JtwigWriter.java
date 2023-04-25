@@ -13,8 +13,8 @@ import java.io.IOException;
 public class JtwigWriter {
     private static final Logger LOG = LoggerFactory.getLogger(JtwigWriter.class);
 
-    public void write(Analysis analysis, String name) throws IOException {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("analysis.twig");
+    public void write(Analysis analysis, String name, String templateName) throws IOException {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate(templateName);
         JtwigModel model = JtwigModel.newModel().with("report", analysis);
         String body = template.render(model);
         String fileName = "report_" + name + ".html";

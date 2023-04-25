@@ -1,28 +1,28 @@
 package org.integrityinspector.parser.reader;
 
-import org.junit.Test;
 import org.integrityinspector.config.AdditionalFileExtensionConfig;
 import org.integrityinspector.parser.reader.file.CodeReader;
 import org.integrityinspector.parser.reader.file.CodeReaderFactory;
 import org.integrityinspector.parser.reader.file.DefaultReader;
 import org.integrityinspector.parser.reader.file.PythonReader;
+import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
 public class CodeReaderFactoryTest {
-    private CodeReaderFactory factory;
-    private CodeReader expected = new PythonReader(false);
+    private final CodeReaderFactory factory;
+    private final CodeReader expected = new PythonReader(false);
 
     {
         Set<String> set6 = new HashSet<>();
 
         set6.add("py_test");
         AdditionalFileExtensionConfig extension6 = new AdditionalFileExtensionConfig(set6, "py");
-        factory = new CodeReaderFactory(Arrays.asList(extension6), false);
+        factory = new CodeReaderFactory(Collections.singletonList(extension6), false);
     }
 
     @Test

@@ -6,12 +6,12 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.Trees;
-import org.junit.Test;
-import org.integrityinspector.antlr.model.CodeTree;
 import org.integrityinspector.antlr.core.CodeTreeConverter;
 import org.integrityinspector.antlr.java.gen.JavaLexer;
 import org.integrityinspector.antlr.java.gen.JavaParser;
 import org.integrityinspector.antlr.java.gen.JavaParserBaseListener;
+import org.integrityinspector.antlr.model.CodeTree;
+import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -36,7 +36,7 @@ public class JavaCodeTreeNodeConverterTest {
         CodeTreeConverter codeTreeConverter = param -> {
             String tree1String = Trees.toStringTree(param);
             String tree2String = Trees.toStringTree(tree);
-            if(tree2String.equals(tree1String)){
+            if (tree2String.equals(tree1String)) {
                 return new CodeTree(42);
             }
             return null;

@@ -5,10 +5,12 @@
     "maxLineLengthDiff": 15,
     "minLineLength": 5,
     "levenshteinSimilarityPercent": 0.333,
-    "threadsCount": 8
+    "multithreadingConfig": {
+      "threadsCount": 8
+    }
   },
   "parseCodeConfig": {
-    "isNeedParseTree": false,
+    "needParseTree": false,
     "additionalFileExtensions": [
       {
         "extensions": [

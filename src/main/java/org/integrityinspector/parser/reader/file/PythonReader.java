@@ -27,10 +27,10 @@ public class PythonReader implements CodeReader {
     private static final CodeTreeNodeConverter CODE_TREE_NODE_CONVERTER = new PythonCodeTreeNodeConverter();
     private static final String LANGUAGE = "Python";
 
-    private final Boolean isNeedParseTree;
+    private final Boolean needParseTree;
 
-    public PythonReader(Boolean isNeedParseTree) {
-        this.isNeedParseTree = isNeedParseTree;
+    public PythonReader(Boolean needParseTree) {
+        this.needParseTree = needParseTree;
     }
 
 
@@ -50,8 +50,8 @@ public class PythonReader implements CodeReader {
         );
 
         CodeTree codeTree = new CodeTree(-1);
-        if (isNeedParseTree) {
-            CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
+        if (needParseTree) {
+            codeTree = CodeTreeUtil.parseCodeTree(file, commentFilteredFileContext, CODE_TREE_NODE_CONVERTER);
         }
 
         return new CodeFile(file, lineForCheck, fileContext.length(), codeTree, LANGUAGE);

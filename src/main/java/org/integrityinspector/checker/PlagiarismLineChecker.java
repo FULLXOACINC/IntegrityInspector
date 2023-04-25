@@ -1,10 +1,8 @@
 package org.integrityinspector.checker;
 
-import lombok.AllArgsConstructor;
 import org.apache.commons.text.similarity.CosineDistance;
 import org.apache.commons.text.similarity.JaccardDistance;
 import org.apache.commons.text.similarity.LevenshteinDistance;
-import org.integrityinspector.config.AnalysisConfig;
 import org.integrityinspector.model.Check;
 import org.integrityinspector.model.CodeFile;
 import org.integrityinspector.model.Line;
@@ -12,9 +10,22 @@ import org.integrityinspector.model.Line;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 public class PlagiarismLineChecker {
-    private AnalysisConfig config;
+    private final int minLineLength;
+    private final int maxLineLengthDiff;
+    private final double levenshteinSimilarityPercent;
+
+    private final LevenshteinDistance levenshteinDistanceCalc = LevenshteinDistance.getDefaultInstance();
+    private final JaccardDistance jaccardDistanceCalc = new JaccardDistance();
+
+    private final CosineDistance cosineDistanceCalc = new CosineDistance();
+
+    public PlagiarismLineChecker(int minLineLength, int maxLineLengthDiff, double levenshteinSimilarityPercent) {
+        this.minLineLength = minLineLength;
+        this.maxLineLengthDiff = maxLineLengthDiff;
+        this.levenshteinSimilarityPercent = levenshteinSimilarityPercent;
+    }
+
 
     public List<Check> check(Line checkingLine, CodeFile baselineCodeFile, String name, String sourceFile) {
         List<Check> list = new ArrayList<>();
@@ -23,11 +34,11 @@ public class PlagiarismLineChecker {
             String baseLineStr = baseLine.getContentFiltered();
             int strLengthDiff = Math.abs(lineStr.length() - baseLineStr.length());
             int minLength = Math.min(lineStr.length(), baseLineStr.length());
-            if (strLengthDiff < config.getMaxLineLengthDiff() && minLength > config.getMinLineLength()) {
-                double levenshteinSimilarity = ((double) LevenshteinDistance.getDefaultInstance().apply(lineStr, baseLineStr)) / Math.max(lineStr.length(), baseLineStr.length());
-                double cosineDistance = new CosineDistance().apply(lineStr, baseLineStr);
-                double jaccardDistance = new JaccardDistance().apply(lineStr, baseLineStr);
-                if (levenshteinSimilarity < config.getLevenshteinSimilarityPercent()) {
+            if (strLengthDiff < maxLineLengthDiff && minLength > minLineLength) {
+                double levenshteinSimilarity = ((double) levenshteinDistanceCalc.apply(lineStr, baseLineStr)) / Math.max(lineStr.length(), baseLineStr.length());
+                double cosineDistance = cosineDistanceCalc.apply(lineStr, baseLineStr);
+                double jaccardDistance = jaccardDistanceCalc.apply(lineStr, baseLineStr);
+                if (levenshteinSimilarity < levenshteinSimilarityPercent) {
                     list.add(new Check(name, sourceFile, checkingLine, baseLine, levenshteinSimilarity, cosineDistance, jaccardDistance));
                 }
             }

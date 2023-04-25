@@ -19,8 +19,8 @@ import static org.junit.Assert.assertTrue;
 
 public class AppConfigReaderTest {
     public static final String CONFIG_JSON = "./config_1.json";
-    private static AppConfigReader configReader = new AppConfigReader();
-    private static AppConfig expected;
+    private static final AppConfigReader configReader = new AppConfigReader();
+    private static final AppConfig expected;
 
     static {
         Set<String> set6 = new HashSet<>();
@@ -45,7 +45,7 @@ public class AppConfigReaderTest {
         additionalFileExtensions.add(extension7);
         additionalFileExtensions.add(extension8);
 
-        AnalysisConfig analysisConfig = new AnalysisConfig(1, 2, 3, 4, 5.0, 6);
+        AnalysisConfig analysisConfig = new AnalysisConfig(1, 2, 3, 4, 5.0, new MultithreadingConfig(6));
         ParserConfig parseCodeConfig = new ParserConfig(false, additionalFileExtensions);
 
         expected = new AppConfig(analysisConfig, parseCodeConfig);
@@ -61,7 +61,7 @@ public class AppConfigReaderTest {
     }
 
     @After
-    public void after() throws IOException {
+    public void after() {
         boolean deleteResult = new File("./config_1.json").delete();
         assertTrue(deleteResult);
     }

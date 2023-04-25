@@ -1,34 +1,33 @@
 package org.integrityinspector.checker;
 
 import org.integrityinspector.antlr.model.CodeTree;
-import org.integrityinspector.config.AnalysisConfig;
 import org.integrityinspector.model.CodeFile;
 import org.integrityinspector.model.Project;
 import org.integrityinspector.model.TreeSimilarity;
-import org.integrityinspector.model.filecheker.FileFullCheck;
-import org.integrityinspector.model.filecheker.FileStringCheck;
+import org.integrityinspector.model.filecheker.FileCheck;
+import org.integrityinspector.model.filecheker.FileTreeCheck;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 
-public class FileFullChecker implements FileChecker<FileFullCheck> {
+public class FileTreeChecker implements FileChecker<FileTreeCheck> {
     private static final TreeSimilarityCalculator TREE_SIMILARITY_CALCULATOR = new TreeSimilarityCalculator();
-    private final FileStringChecker fileStringChecker;
+    private final FileChecker<FileCheck> fileStringChecker;
 
-    public FileFullChecker(PlagiarismLineChecker lineChecker, AnalysisConfig config) {
-        this.fileStringChecker = new FileStringChecker(lineChecker, config);
+    public FileTreeChecker(FileChecker<FileCheck> fileStringChecker) {
+        this.fileStringChecker = fileStringChecker;
     }
 
-    public FileFullCheck checkFile(CodeFile codeFile, List<Project> baselineProjects) {
-        FileStringCheck fileStringCheck = fileStringChecker.checkFile(codeFile, baselineProjects);
+    public FileTreeCheck checkFile(CodeFile codeFile, List<Project> baselineProjects) {
+        FileCheck fileCheck = fileStringChecker.checkFile(codeFile, baselineProjects);
         List<TreeSimilarity> codeTreeSimilarityList = calculateTreeSimilarity(codeFile, baselineProjects);
 
-        return new FileFullCheck(
+        return new FileTreeCheck(
                 codeFile.getSourceFile(),
-                fileStringCheck.getCheckedLines(),
-                fileStringCheck.getUniqueStringPresent(),
+                fileCheck.getCheckedLines(),
+                fileCheck.getUniqueStringPresent(),
                 codeTreeSimilarityList
         );
     }

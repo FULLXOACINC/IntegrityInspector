@@ -10,7 +10,7 @@ public class DefaultLineCleanerTest {
 
     @Test
     public void oneLineCommentTest() {
-        String code = "qwertyuiop[]\';lkjhgfdszxcvbnm,/`1234567890-=<>?\"{}|~!@#$%^&*()_+QWERTYUIOPASDFGHJKLZXCVBNM";
+        String code = "qwertyuiop[]';lkjhgfdszxcvbnm,/`1234567890-=<>?\"{}|~!@#$%^&*()_+QWERTYUIOPASDFGHJKLZXCVBNM";
         String actual = CLEANER.cleanLine(code);
         String expected = "qwertyuioplkjhgfdszxcvbnm1234567890QWERTYUIOPASDFGHJKLZXCVBNM";
         assertEquals(expected, actual);

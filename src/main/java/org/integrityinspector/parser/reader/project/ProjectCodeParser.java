@@ -18,7 +18,7 @@ public class ProjectCodeParser {
     private final CodeReaderFactory codeReaderFactory;
 
     public ProjectCodeParser(ParserConfig parseCodeConfig) {
-        codeReaderFactory = new CodeReaderFactory(parseCodeConfig.getAdditionalFileExtensions(), parseCodeConfig.getIsNeedParseTree());
+        codeReaderFactory = new CodeReaderFactory(parseCodeConfig.getAdditionalFileExtensions(), parseCodeConfig.getNeedParseTree());
     }
 
     public List<CodeFile> parseCode(File dir) throws IOException {
