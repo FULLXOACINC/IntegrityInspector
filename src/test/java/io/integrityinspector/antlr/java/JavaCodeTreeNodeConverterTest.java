@@ -1,16 +1,16 @@
 package io.integrityinspector.antlr.java;
 
 import io.integrityinspector.antlr.core.CodeTreeConverter;
+import io.integrityinspector.antlr.java.gen.JavaLexer;
+import io.integrityinspector.antlr.java.gen.JavaParser;
+import io.integrityinspector.antlr.java.gen.JavaParserBaseListener;
+import io.integrityinspector.antlr.model.CodeTree;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.Trees;
-import io.integrityinspector.antlr.java.gen.JavaLexer;
-import io.integrityinspector.antlr.java.gen.JavaParser;
-import io.integrityinspector.antlr.java.gen.JavaParserBaseListener;
-import io.integrityinspector.antlr.model.CodeTree;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

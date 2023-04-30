@@ -1,6 +1,5 @@
 package io.integrityinspector.parser.reader.project;
 
-import io.integrityinspector.config.ParserConfig;
 import io.integrityinspector.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +14,8 @@ public class ProjectParserImpl implements ProjectParser {
     private static final Logger LOG = LoggerFactory.getLogger(ProjectParserImpl.class);
     private final ProjectCodeParser projectCodeParser;
 
-    public ProjectParserImpl(ParserConfig parseCodeConfig) {
-        projectCodeParser = new ProjectCodeParser(parseCodeConfig);
+    public ProjectParserImpl(ProjectCodeParser projectCodeParser) {
+        this.projectCodeParser = projectCodeParser;
     }
 
     @Override

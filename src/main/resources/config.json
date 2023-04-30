@@ -11,6 +11,29 @@
   },
   "parseCodeConfig": {
     "needParseTree": false,
+    "programmingLangLineStartExclusion": {
+      "cpp": [
+        "include",
+        "pragma",
+        "import"
+      ],
+      "cSharp": [
+        "using",
+        "namespace"
+      ],
+      "java": [
+        "import",
+        "from"
+      ],
+      "python": [
+        "import",
+        "package"
+      ],
+      "js": [
+        "import",
+        "package"
+      ]
+    },
     "additionalFileExtensions": [
       {
         "extensions": [

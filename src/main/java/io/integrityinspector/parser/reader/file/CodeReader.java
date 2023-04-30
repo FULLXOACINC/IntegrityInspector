@@ -4,7 +4,8 @@ import io.integrityinspector.model.CodeFile;
 
 import java.io.IOException;
 
-public interface CodeReader {
+public interface CodeReader<T extends CodeFile> {
+    T read(String file) throws IOException;
 
-    CodeFile read(String file) throws IOException;
+    T createCodeFile(String file, String fileContext);
 }

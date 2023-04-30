@@ -9,10 +9,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -46,7 +43,14 @@ public class AppConfigReaderTest {
         additionalFileExtensions.add(extension8);
 
         AnalysisConfig analysisConfig = new AnalysisConfig(1, 2, 3, 4, 5.0, new MultithreadingConfig(6));
-        ParserConfig parseCodeConfig = new ParserConfig(false, additionalFileExtensions);
+
+        ProgrammingLangLineStartExclusion programmingLangLineStartExclusion = new ProgrammingLangLineStartExclusion();
+        programmingLangLineStartExclusion.setCpp(new HashSet<>(Arrays.asList("1", "2", "3")));
+        programmingLangLineStartExclusion.setCSharp(new HashSet<>(Arrays.asList("4", "5")));
+        programmingLangLineStartExclusion.setJava(new HashSet<>(Arrays.asList("6", "7")));
+        programmingLangLineStartExclusion.setPython(new HashSet<>(Arrays.asList("8", "9")));
+        programmingLangLineStartExclusion.setJs(new HashSet<>(Arrays.asList("10", "11")));
+        ParserConfig parseCodeConfig = new ParserConfig(false, additionalFileExtensions, programmingLangLineStartExclusion);
 
         expected = new AppConfig(analysisConfig, parseCodeConfig);
     }

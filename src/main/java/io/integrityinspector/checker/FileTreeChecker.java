@@ -2,6 +2,7 @@ package io.integrityinspector.checker;
 
 import io.integrityinspector.antlr.model.CodeTree;
 import io.integrityinspector.model.CodeFile;
+import io.integrityinspector.model.CodeFileTree;
 import io.integrityinspector.model.Project;
 import io.integrityinspector.model.TreeSimilarity;
 import io.integrityinspector.model.filecheker.FileCheck;
@@ -35,13 +36,19 @@ public class FileTreeChecker implements FileChecker<FileTreeCheck> {
 
     private List<TreeSimilarity> calculateTreeSimilarity(CodeFile codeFile, List<Project> baselineProjects) {
         List<TreeSimilarity> result = new ArrayList<>();
-        CodeTree codeFileTree = codeFile.getCodeTree();
+        if (!(codeFile instanceof CodeFileTree)) {
+            return result;
+        }
+        CodeTree codeFileTree = ((CodeFileTree) codeFile).getCodeTree();
         for (Project baselineProject : baselineProjects) {
             for (CodeFile baselineCodeFile : baselineProject.getCodeFileList()) {
                 if (Objects.equals(codeFile.getLanguage(), baselineCodeFile.getLanguage())) {
-                    CodeTree baselineCodeFileTree = baselineCodeFile.getCodeTree();
-                    int similarity = TREE_SIMILARITY_CALCULATOR.calculateTreeSimilarity(codeFileTree, baselineCodeFileTree);
-                    result.add(new TreeSimilarity(baselineProject.getName(), baselineCodeFile.getSourceFile(), similarity));
+                    if (baselineCodeFile instanceof CodeFileTree) {
+                        CodeTree baselineCodeFileTree = ((CodeFileTree) baselineCodeFile).getCodeTree();
+                        int similarity = TREE_SIMILARITY_CALCULATOR.calculateTreeSimilarity(codeFileTree, baselineCodeFileTree);
+                        result.add(new TreeSimilarity(baselineProject.getName(), baselineCodeFile.getSourceFile(), similarity));
+                    }
+
                 }
             }
         }

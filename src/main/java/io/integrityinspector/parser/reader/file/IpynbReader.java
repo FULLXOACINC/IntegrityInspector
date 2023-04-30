@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.integrityinspector.model.CodeFile;
-import lombok.EqualsAndHashCode;
+import lombok.AllArgsConstructor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,21 +13,25 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@EqualsAndHashCode(callSuper = true)
-public class IpynbReader extends PythonReader {
+@AllArgsConstructor
+public class IpynbReader<T extends CodeFile> implements CodeReader<T> {
     private static final String CELLS = "cells";
     private static final String CELL_TYPE = "cell_type";
     private static final String CODE = "code";
     private static final String SOURCE = "source";
 
-    public IpynbReader(Boolean needParseTree) {
-        super(needParseTree);
+    private final CodeReader<T> pythonReader;
+
+
+    @Override
+    public T read(String file) throws IOException {
+        String ipynbCodeFileContent = readIpynbCodeFile(file);
+        return pythonReader.createCodeFile(file, ipynbCodeFileContent);
     }
 
     @Override
-    public CodeFile read(String file) throws IOException {
-        String ipynbCodeFileContent = readIpynbCodeFile(file);
-        return super.convertToCodeFile(file, ipynbCodeFileContent);
+    public T createCodeFile(String file, String fileContext) {
+        return pythonReader.createCodeFile(file, fileContext);
     }
 
     public String readIpynbCodeFile(String file) throws IOException {

@@ -1,12 +1,12 @@
 package io.integrityinspector.antlr.core;
 
+import io.integrityinspector.antlr.model.CodeTree;
+import io.integrityinspector.antlr.python.gen.Python3Lexer;
+import io.integrityinspector.antlr.python.gen.Python3Parser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import io.integrityinspector.antlr.model.CodeTree;
-import io.integrityinspector.antlr.python.gen.Python3Lexer;
-import io.integrityinspector.antlr.python.gen.Python3Parser;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

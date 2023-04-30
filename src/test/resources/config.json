@@ -11,6 +11,29 @@
   },
   "parseCodeConfig": {
     "needParseTree": false,
+    "programmingLangLineStartExclusion": {
+      "cpp": [
+        "1",
+        "2",
+        "3"
+      ],
+      "cSharp": [
+        "4",
+        "5"
+      ],
+      "java": [
+        "6",
+        "7"
+      ],
+      "python": [
+        "8",
+        "9"
+      ],
+      "js": [
+        "10",
+        "11"
+      ]
+    },
     "additionalFileExtensions": [
       {
         "extensions": [
