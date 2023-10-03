@@ -42,13 +42,11 @@ public class FileTreeChecker implements FileChecker<FileTreeCheck> {
         CodeTree codeFileTree = ((CodeFileTree) codeFile).getCodeTree();
         for (Project baselineProject : baselineProjects) {
             for (CodeFile baselineCodeFile : baselineProject.getCodeFileList()) {
-                if (Objects.equals(codeFile.getLanguage(), baselineCodeFile.getLanguage())) {
-                    if (baselineCodeFile instanceof CodeFileTree) {
-                        CodeTree baselineCodeFileTree = ((CodeFileTree) baselineCodeFile).getCodeTree();
-                        int similarity = TREE_SIMILARITY_CALCULATOR.calculateTreeSimilarity(codeFileTree, baselineCodeFileTree);
-                        result.add(new TreeSimilarity(baselineProject.getName(), baselineCodeFile.getSourceFile(), similarity));
-                    }
-
+                if (Objects.equals(codeFile.getLanguage(), baselineCodeFile.getLanguage()) &&
+                        baselineCodeFile instanceof CodeFileTree) {
+                    CodeTree baselineCodeFileTree = ((CodeFileTree) baselineCodeFile).getCodeTree();
+                    int similarity = TREE_SIMILARITY_CALCULATOR.calculateTreeSimilarity(codeFileTree, baselineCodeFileTree);
+                    result.add(new TreeSimilarity(baselineProject.getName(), baselineCodeFile.getSourceFile(), similarity));
                 }
             }
         }
