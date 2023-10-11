@@ -9,6 +9,9 @@
       "threadsCount": 8
     }
   },
+  "multipleProjectCheckConfig": {
+    "maxUniquenessPercentageForCreatingReport": 75
+  },
   "parseCodeConfig": {
     "needParseTree": false,
     "programmingLangLineStartExclusion": {

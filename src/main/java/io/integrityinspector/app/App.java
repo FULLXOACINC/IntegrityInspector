@@ -1,23 +1,14 @@
 package io.integrityinspector.app;
 
 import com.beust.jcommander.JCommander;
-import io.integrityinspector.analysis.AnalysisCreator;
-import io.integrityinspector.config.AppConfig;
+import io.integrityinspector.Inspector.IntegrityInspector;
+import io.integrityinspector.Inspector.MultipleProjectIntegrityInspector;
+import io.integrityinspector.Inspector.SingleProjectIntegrityInspector;
 import io.integrityinspector.config.AppConfigReader;
-import io.integrityinspector.jtwig.JtwigWriter;
-import io.integrityinspector.model.Analysis;
-import io.integrityinspector.model.Project;
-import io.integrityinspector.parser.reader.project.ProjectParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 public class App {
-    private static final Logger LOG = LoggerFactory.getLogger(App.class);
-
     public static final String PLAGIARISM_CHECKER = "IntegrityInspector";
 
     public static void main(String[] args) throws IOException {
@@ -30,26 +21,13 @@ public class App {
             return;
         }
 
-        File checkFolder = new File(parameters.getCheckingProject());
-
-        AppConfigReader configReader = new AppConfigReader();
-        AppConfig config = configReader.readBasedOnParameters(parameters);
-
         AppCoreComponentsFactory appCoreComponentsFactory = new AppCoreComponentsFactory();
-        AppCoreComponents appCoreComponents = appCoreComponentsFactory.createAppCoreComponents(config);
-
-        ProjectParser parser = appCoreComponents.getProjectParser();
-        LOG.info("Parsing check project ...");
-        Project checkProject = parser.parseProject(checkFolder);
-        LOG.info("Parsing baseline projects ...");
-        List<Project> baselineProjects = parser.parseProjectListFromRootDir(parameters.getBaseLineProjectDir());
-        LOG.info("Analysis in progress ...");
-
-        AnalysisCreator analysisCreator = appCoreComponents.getAnalysisCreator();
-        Analysis analysis = analysisCreator.create(checkProject, baselineProjects);
-        LOG.info("Generating report ...");
-        JtwigWriter writer = new JtwigWriter();
-        writer.write(analysis, checkFolder.getName(), appCoreComponents.getReportTemplate());
+        AppConfigReader configReader = new AppConfigReader();
+        AppCoreComponents appCoreComponents = appCoreComponentsFactory.createAppCoreComponents(configReader.readBasedOnParameters(parameters));
+        IntegrityInspector integrityInspector = (parameters.getCheckingDirectory() != null) ?
+                new MultipleProjectIntegrityInspector(appCoreComponents) :
+                new SingleProjectIntegrityInspector(appCoreComponents);
+        integrityInspector.process(parameters);
 
     }
 

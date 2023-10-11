@@ -1,4 +1,4 @@
-package io.integrityinspector.jtwig;
+package io.integrityinspector.write.jtwig;
 
 import io.integrityinspector.config.AppConfig;
 

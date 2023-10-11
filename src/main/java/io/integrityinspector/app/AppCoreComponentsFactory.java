@@ -3,9 +3,11 @@ package io.integrityinspector.app;
 import io.integrityinspector.analysis.AnalysisCreator;
 import io.integrityinspector.analysis.AnalysisCreatorFactory;
 import io.integrityinspector.config.AppConfig;
-import io.integrityinspector.jtwig.JtwigTemplateNameFactory;
 import io.integrityinspector.parser.reader.project.ProjectParser;
 import io.integrityinspector.parser.reader.project.ProjectParserFactory;
+import io.integrityinspector.write.core.AnalysisWriter;
+import io.integrityinspector.write.jtwig.JtwigTemplateNameFactory;
+import io.integrityinspector.write.jtwig.JtwigWriter;
 
 public class AppCoreComponentsFactory {
 
@@ -20,10 +22,14 @@ public class AppCoreComponentsFactory {
         ProjectParserFactory projectParserFactory = new ProjectParserFactory();
         ProjectParser projectParser = projectParserFactory.createProjectParser(config);
 
+        AnalysisWriter analysisWriter = new JtwigWriter();
+
         return new AppCoreComponents(
                 projectParser,
                 analysisCreator,
-                templateName
+                templateName,
+                analysisWriter,
+                config
         );
     }
 }

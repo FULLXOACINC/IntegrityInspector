@@ -40,7 +40,7 @@ public class FileStringChecker implements FileChecker<FileCheck> {
     }
 
     private BigDecimal calculateUniqueStringPresent(CodeFile codeFile, double plagiarismLineCount) {
-        if (codeFile.getCode().size() == 0) {
+        if (codeFile.getCode().isEmpty()) {
             return ONE_HUNDRED;
         }
         BigDecimal totalLineCount = BigDecimal.valueOf(codeFile.getCode().size());

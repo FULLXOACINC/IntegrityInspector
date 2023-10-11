@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-public class AppConfig {
-    private AnalysisConfig analysisConfig;
-    private ParserConfig parseCodeConfig;
-    private MultipleProjectCheckConfig multipleProjectCheckConfig;
+public class MultipleProjectCheckConfig {
+    private int maxUniquenessPercentageForCreatingReport;
 }

@@ -1,6 +1,7 @@
-package io.integrityinspector.jtwig;
+package io.integrityinspector.write.jtwig;
 
 import io.integrityinspector.model.Analysis;
+import io.integrityinspector.write.core.AnalysisWriter;
 import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 import org.slf4j.Logger;
@@ -10,7 +11,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class JtwigWriter {
+public class JtwigWriter implements AnalysisWriter {
     private static final Logger LOG = LoggerFactory.getLogger(JtwigWriter.class);
 
     public void write(Analysis analysis, String name, String templateName) throws IOException {
