@@ -1,13 +1,20 @@
 package io.integrityinspector.parser.cleaner.comment;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class PythonFileCommentCleaner implements CommentCleaner {
-    private static final String SINGLE_LINE_COMMENT_PATTERN = "(?m)^\\s*#.*$";
-    private static final String MULTI_LINE_COMMENT_PATTERN = "(['\"])\\1\\1[\\d\\D]*?\\1{3}";
+    private static final Pattern SINGLE_LINE_COMMENT_PATTERN = Pattern.compile("(?m)^\\s*#.*$");
+    private static final Pattern MULTI_LINE_COMMENT_PATTERN = Pattern.compile("(['\"])\\1\\1[\\d\\D]*?\\1{3}");
 
     @Override
     public String removeComments(String pythonCode) {
-        return pythonCode
-                .replaceAll(SINGLE_LINE_COMMENT_PATTERN, "")
-                .replaceAll(MULTI_LINE_COMMENT_PATTERN, "");
+
+        Matcher matcherSingleLine = SINGLE_LINE_COMMENT_PATTERN.matcher(pythonCode);
+        return MULTI_LINE_COMMENT_PATTERN
+                .matcher(
+                        matcherSingleLine.replaceAll("")
+                )
+                .replaceAll("");
     }
 }
