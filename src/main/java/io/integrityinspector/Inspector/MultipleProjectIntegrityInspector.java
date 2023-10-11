@@ -46,7 +46,7 @@ public class MultipleProjectIntegrityInspector implements IntegrityInspector {
 
                 if (analysis.getTotalUniquenessPercentage()
                         .compareTo(BigDecimal.valueOf(maxUniquenessPercentageForCreatingReport)) > 0) {
-                    LOG.info("Skipping based on maxUniquenessPercentageForCreatingReport(" + analysis.getTotalUniquenessPercentage() + "): " + analysis.getTotalUniquenessPercentage() + ", project:" + projectName);
+                    LOG.info("Skipping based on maxUniquenessPercentageForCreatingReport(" + maxUniquenessPercentageForCreatingReport + "): " + analysis.getTotalUniquenessPercentage() + ", project:" + projectName);
                 } else {
                     LOG.info("Generating report ...");
                     analysisWriter.write(analysis, projectName, reportTemplate);
