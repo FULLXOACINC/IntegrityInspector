@@ -50,7 +50,7 @@ public class AppConfigReaderTest {
         programmingLangLineStartExclusion.setJava(new HashSet<>(Arrays.asList("6", "7")));
         programmingLangLineStartExclusion.setPython(new HashSet<>(Arrays.asList("8", "9")));
         programmingLangLineStartExclusion.setJs(new HashSet<>(Arrays.asList("10", "11")));
-        ParserConfig parseCodeConfig = new ParserConfig(false, additionalFileExtensions, programmingLangLineStartExclusion);
+        ParserConfig parseCodeConfig = new ParserConfig(false, additionalFileExtensions, programmingLangLineStartExclusion, Collections.singletonList("java"));
         MultipleProjectCheckConfig multipleProjectCheckConfig = new MultipleProjectCheckConfig(12);
         expected = new AppConfig(analysisConfig, parseCodeConfig, multipleProjectCheckConfig);
     }

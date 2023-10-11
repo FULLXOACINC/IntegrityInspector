@@ -15,4 +15,5 @@ public class ParserConfig {
     private Boolean needParseTree;
     private List<AdditionalFileExtensionConfig> additionalFileExtensions;
     private ProgrammingLangLineStartExclusion programmingLangLineStartExclusion;
+    private List<String> listOfSupportedExtensions;
 }
