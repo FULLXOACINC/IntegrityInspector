@@ -1,5 +1,6 @@
 package io.integrityinspector.parser.reader.project;
 
+import io.integrityinspector.model.CodeFile;
 import io.integrityinspector.model.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +28,7 @@ public class ProjectParserImpl implements ProjectParser {
             if (file.isDirectory()) {
                 String name = file.getName();
                 LOG.info("Find new project: {}", name);
-                projectList.add(new Project(name, projectCodeParser.parseCode(file)));
+                projectList.add(createProject(file));
             } else {
                 LOG.info("[IGNORE] file isn't dir: {}", file.getName());
             }
@@ -38,6 +39,14 @@ public class ProjectParserImpl implements ProjectParser {
     @Override
     public Project parseProject(File file) throws IOException {
         LOG.info("Start parsing process of dir: {}", file.getName());
-        return new Project(file.getName(), projectCodeParser.parseCode(file));
+        return createProject(file);
+    }
+
+    private Project createProject(File file) throws IOException {
+        List<CodeFile> codeFileList = projectCodeParser.parseCode(file);
+        int projectLineCount = codeFileList.stream()
+                .map(CodeFile::getFileLineCount)
+                .reduce(Integer::sum).orElse(1000);
+        return new Project(file.getName(), codeFileList, projectLineCount);
     }
 }

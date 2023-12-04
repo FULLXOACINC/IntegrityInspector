@@ -14,24 +14,27 @@ import java.util.List;
 @AllArgsConstructor
 public class StringAnalysisCreator implements AnalysisCreator {
     private final ProjectAnalyzer<FileCheck> projectAnalyzer;
-    private final CountsExtractor countsExtractorImpl;
-    private final BaseLineProjectLimiter baseLineProjectLimiterImpl;
+    private final CountsExtractor countsExtractor;
+    private final BaseLineProjectLimiter baseLineProjectLimiter;
     private final ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker;
-    private final UniquenessPercentageCalculator uniquenessPercentageCalculatorImpl;
+    private final UniquenessPercentageCalculator uniquenessPercentageCalculator;
+    private final ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator;
 
 
     public Analysis create(Project checkProject, List<Project> baselineProjects) {
         Analysis analysis = new Analysis();
-        List<FileCheck> fileTreeChecks = projectAnalyzer.process(checkProject, baselineProjects);
-        List<ProjectCount> countsPerProject = countsExtractorImpl.extractCountsPerProject(fileTreeChecks);
-        List<Project> filteredBaselineProjects = baseLineProjectLimiterImpl.limitBaselineProjectList(countsPerProject, baselineProjects);
+        List<FileCheck> fileChecks = projectAnalyzer.process(checkProject, baselineProjects);
+        List<ProjectCount> countsPerProject = countsExtractor.extractCountsPerProject(fileChecks);
+        List<Project> filteredBaselineProjects = baseLineProjectLimiter.limitBaselineProjectList(countsPerProject, baselineProjects);
 
         List<FileCheck> filteredFileStringChecks = stringProjectChecker.checkProject(checkProject, filteredBaselineProjects);
-        BigDecimal totalUniquenessPercentage = uniquenessPercentageCalculatorImpl.calculateTotalUniquenessPercentage(filteredFileStringChecks);
+        BigDecimal totalUniquenessPercentage = uniquenessPercentageCalculator.calculateTotalUniquenessPercentage(filteredFileStringChecks);
+        BigDecimal zzhUniquenessCoefficient = zzhUniquenessCoefficientCalculator.calculateZzhUniquenessCoefficient(totalUniquenessPercentage, checkProject.getProjectLineCount());
 
         analysis.setProjectChecks(filteredFileStringChecks);
         analysis.setCountPerProject(countsPerProject);
         analysis.setTotalUniquenessPercentage(totalUniquenessPercentage);
+        analysis.setZzhUniquenessCoefficient(zzhUniquenessCoefficient);
 
         return analysis;
     }

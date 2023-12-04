@@ -17,21 +17,23 @@ import java.util.List;
 @AllArgsConstructor
 public class TreeAnalysisCreator implements AnalysisCreator {
     private final ProjectAnalyzer<FileTreeCheck> projectAnalyzer;
-    private final CountsExtractor countsExtractorImpl;
-    private final BaseLineProjectLimiter baseLineProjectLimiterImpl;
+    private final CountsExtractor countsExtractor;
+    private final BaseLineProjectLimiter baseLineProjectLimiter;
     private final ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker;
-    private final UniquenessPercentageCalculator uniquenessPercentageCalculatorImpl;
+    private final UniquenessPercentageCalculator uniquenessPercentageCalculator;
     private final CodeTreeAnalysisExtractor codeTreeAnalysisExtractor;
+    private final ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator;
 
 
     public Analysis create(Project checkProject, List<Project> baselineProjects) {
         Analysis analysis = new Analysis();
         List<FileTreeCheck> fileTreeChecks = projectAnalyzer.process(checkProject, baselineProjects);
-        List<ProjectCount> countsPerProject = countsExtractorImpl.extractCountsPerProject(fileTreeChecks);
-        List<Project> filteredBaselineProjects = baseLineProjectLimiterImpl.limitBaselineProjectList(countsPerProject, baselineProjects);
+        List<ProjectCount> countsPerProject = countsExtractor.extractCountsPerProject(fileTreeChecks);
+        List<Project> filteredBaselineProjects = baseLineProjectLimiter.limitBaselineProjectList(countsPerProject, baselineProjects);
 
         List<FileCheck> filteredFileStringChecks = stringProjectChecker.checkProject(checkProject, filteredBaselineProjects);
-        BigDecimal totalUniquenessPercentage = uniquenessPercentageCalculatorImpl.calculateTotalUniquenessPercentage(filteredFileStringChecks);
+        BigDecimal totalUniquenessPercentage = uniquenessPercentageCalculator.calculateTotalUniquenessPercentage(filteredFileStringChecks);
+        BigDecimal zzhUniquenessCoefficient = zzhUniquenessCoefficientCalculator.calculateZzhUniquenessCoefficient(totalUniquenessPercentage, checkProject.getProjectLineCount());
 
         List<TreeCheckList> limitedFileTreeChecks = codeTreeAnalysisExtractor.codeTreeCheck(fileTreeChecks);
 
@@ -39,6 +41,7 @@ public class TreeAnalysisCreator implements AnalysisCreator {
         analysis.setProjectChecks(finalFileTreeChecks);
         analysis.setCountPerProject(countsPerProject);
         analysis.setTotalUniquenessPercentage(totalUniquenessPercentage);
+        analysis.setZzhUniquenessCoefficient(zzhUniquenessCoefficient);
 
         return analysis;
     }

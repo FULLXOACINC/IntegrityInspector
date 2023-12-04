@@ -34,6 +34,9 @@
 <div style="background:gray;padding:5pt 2%; width: 96%">
     <span style="font-size:15.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">Total percentage: {{ report.totalUniquenessPercentage }} %</span>
 </div>
+<div style="background:gray;padding:5pt 2%; width: 96%">
+    <span style="font-size:15.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">ZZH Uniqueness Coefficient percentage: {{ report.zzhUniquenessCoefficient }} %</span>
+</div>
 {% for fileCheck in report.projectChecks %}
     <div style="background:gray;padding:5pt 2%; width: 96%">
         <span style="font-size:10.5pt;font-family:&quot;Arial&quot;,sans-serif;color:black">File name: {{ fileCheck.codeFileName }}</span>

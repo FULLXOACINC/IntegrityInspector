@@ -10,4 +10,5 @@ import java.util.List;
 public class Project {
     private String name;
     private List<CodeFile> codeFileList;
+    private int projectLineCount;
 }

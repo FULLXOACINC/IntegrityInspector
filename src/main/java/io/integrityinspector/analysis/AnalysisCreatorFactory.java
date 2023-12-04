@@ -30,7 +30,8 @@ public class AnalysisCreatorFactory {
         BaseLineProjectLimiter baseLineProjectLimiter = new BaseLineProjectLimiterImpl();
         ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker = new ProjectChecker<>(fileStringChecker);
         UniquenessPercentageCalculator uniquenessPercentageCalculator = new UniquenessPercentageCalculatorImpl();
-        return new StringAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator);
+        ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator = new ZzhUniquenessCoefficientCalculatorImpl();
+        return new StringAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, zzhUniquenessCoefficientCalculator);
     }
 
     private static ProjectAnalyzer<FileCheck> getFileCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
@@ -49,8 +50,10 @@ public class AnalysisCreatorFactory {
         BaseLineProjectLimiter baseLineProjectLimiter = new BaseLineProjectLimiterImpl();
         ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker = new ProjectChecker<>(fileStringChecker);
         UniquenessPercentageCalculator uniquenessPercentageCalculator = new UniquenessPercentageCalculatorImpl();
+
         CodeTreeAnalysisExtractor codeTreeAnalysisExtractor = new CodeTreeAnalysisExtractorImpl(analysisConfig.getProjectLimit());
-        return new TreeAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, codeTreeAnalysisExtractor);
+        ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator = new ZzhUniquenessCoefficientCalculatorImpl();
+        return new TreeAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, codeTreeAnalysisExtractor, zzhUniquenessCoefficientCalculator);
     }
 
     private static ProjectAnalyzer<FileTreeCheck> getFileTreeCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
