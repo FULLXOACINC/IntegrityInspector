@@ -10,7 +10,7 @@ public class ZzhUniquenessCoefficientCalculatorImpl implements ZzhUniquenessCoef
     @Override
     public BigDecimal calculateZzhUniquenessCoefficient(BigDecimal totalUniquenessPercentage, int projectLineCount) {
         double projectLineCountDouble = projectLineCount > 1000 ? 1.0 : ((double) projectLineCount) / 1000;
-        double coefficient = 1 / (1 + Math.exp(-4 * projectLineCountDouble));
+        double coefficient = 1 / (1 + Math.exp(-Math.PI * projectLineCountDouble));
         return ONE_HUNDRED
                 .subtract(ONE_HUNDRED
                         .subtract(totalUniquenessPercentage)
