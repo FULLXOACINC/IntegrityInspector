@@ -15,6 +15,6 @@ public class Analysis {
     private List<? extends FileCheck> projectChecks;
     private List<ProjectCount> countPerProject;
     private BigDecimal totalUniquenessPercentage;
-    private BigDecimal zzhUniquenessCoefficient;
+    private BigDecimal zzh1UniquenessCoefficient;
 
 }

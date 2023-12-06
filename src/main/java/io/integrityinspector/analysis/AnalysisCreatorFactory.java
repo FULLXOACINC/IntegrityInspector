@@ -30,8 +30,8 @@ public class AnalysisCreatorFactory {
         BaseLineProjectLimiter baseLineProjectLimiter = new BaseLineProjectLimiterImpl();
         ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker = new ProjectChecker<>(fileStringChecker);
         UniquenessPercentageCalculator uniquenessPercentageCalculator = new UniquenessPercentageCalculatorImpl();
-        ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator = new ZzhUniquenessCoefficientCalculatorImpl();
-        return new StringAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, zzhUniquenessCoefficientCalculator);
+        Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator = new Zzh1UniquenessCoefficientCalculatorImpl();
+        return new StringAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, zzh1UniquenessCoefficientCalculator);
     }
 
     private static ProjectAnalyzer<FileCheck> getFileCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
@@ -52,8 +52,8 @@ public class AnalysisCreatorFactory {
         UniquenessPercentageCalculator uniquenessPercentageCalculator = new UniquenessPercentageCalculatorImpl();
 
         CodeTreeAnalysisExtractor codeTreeAnalysisExtractor = new CodeTreeAnalysisExtractorImpl(analysisConfig.getProjectLimit());
-        ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator = new ZzhUniquenessCoefficientCalculatorImpl();
-        return new TreeAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, codeTreeAnalysisExtractor, zzhUniquenessCoefficientCalculator);
+        Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator = new Zzh1UniquenessCoefficientCalculatorImpl();
+        return new TreeAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, codeTreeAnalysisExtractor, zzh1UniquenessCoefficientCalculator);
     }
 
     private static ProjectAnalyzer<FileTreeCheck> getFileTreeCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {

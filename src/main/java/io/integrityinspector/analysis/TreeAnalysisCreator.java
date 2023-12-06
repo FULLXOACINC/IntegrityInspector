@@ -22,7 +22,7 @@ public class TreeAnalysisCreator implements AnalysisCreator {
     private final ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker;
     private final UniquenessPercentageCalculator uniquenessPercentageCalculator;
     private final CodeTreeAnalysisExtractor codeTreeAnalysisExtractor;
-    private final ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator;
+    private final Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator;
 
 
     public Analysis create(Project checkProject, List<Project> baselineProjects) {
@@ -33,7 +33,7 @@ public class TreeAnalysisCreator implements AnalysisCreator {
 
         List<FileCheck> filteredFileStringChecks = stringProjectChecker.checkProject(checkProject, filteredBaselineProjects);
         BigDecimal totalUniquenessPercentage = uniquenessPercentageCalculator.calculateTotalUniquenessPercentage(filteredFileStringChecks);
-        BigDecimal zzhUniquenessCoefficient = zzhUniquenessCoefficientCalculator.calculateZzhUniquenessCoefficient(totalUniquenessPercentage, checkProject.getProjectLineCount());
+        BigDecimal zzhUniquenessCoefficient = zzh1UniquenessCoefficientCalculator.calculateZzh1UniquenessCoefficient(totalUniquenessPercentage, checkProject.getProjectLineCount());
 
         List<TreeCheckList> limitedFileTreeChecks = codeTreeAnalysisExtractor.codeTreeCheck(fileTreeChecks);
 
@@ -41,7 +41,7 @@ public class TreeAnalysisCreator implements AnalysisCreator {
         analysis.setProjectChecks(finalFileTreeChecks);
         analysis.setCountPerProject(countsPerProject);
         analysis.setTotalUniquenessPercentage(totalUniquenessPercentage);
-        analysis.setZzhUniquenessCoefficient(zzhUniquenessCoefficient);
+        analysis.setZzh1UniquenessCoefficient(zzhUniquenessCoefficient);
 
         return analysis;
     }

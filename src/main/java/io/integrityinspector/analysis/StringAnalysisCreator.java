@@ -18,7 +18,7 @@ public class StringAnalysisCreator implements AnalysisCreator {
     private final BaseLineProjectLimiter baseLineProjectLimiter;
     private final ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker;
     private final UniquenessPercentageCalculator uniquenessPercentageCalculator;
-    private final ZzhUniquenessCoefficientCalculator zzhUniquenessCoefficientCalculator;
+    private final Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator;
 
 
     public Analysis create(Project checkProject, List<Project> baselineProjects) {
@@ -29,12 +29,12 @@ public class StringAnalysisCreator implements AnalysisCreator {
 
         List<FileCheck> filteredFileStringChecks = stringProjectChecker.checkProject(checkProject, filteredBaselineProjects);
         BigDecimal totalUniquenessPercentage = uniquenessPercentageCalculator.calculateTotalUniquenessPercentage(filteredFileStringChecks);
-        BigDecimal zzhUniquenessCoefficient = zzhUniquenessCoefficientCalculator.calculateZzhUniquenessCoefficient(totalUniquenessPercentage, checkProject.getProjectLineCount());
+        BigDecimal zzhUniquenessCoefficient = zzh1UniquenessCoefficientCalculator.calculateZzh1UniquenessCoefficient(totalUniquenessPercentage, checkProject.getProjectLineCount());
 
         analysis.setProjectChecks(filteredFileStringChecks);
         analysis.setCountPerProject(countsPerProject);
         analysis.setTotalUniquenessPercentage(totalUniquenessPercentage);
-        analysis.setZzhUniquenessCoefficient(zzhUniquenessCoefficient);
+        analysis.setZzh1UniquenessCoefficient(zzhUniquenessCoefficient);
 
         return analysis;
     }
