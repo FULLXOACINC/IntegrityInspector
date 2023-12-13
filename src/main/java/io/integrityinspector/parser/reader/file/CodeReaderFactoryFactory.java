@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static io.integrityinspector.checker.TreeSimilarityCalculator.NOT_SUPPORT_CODE;
+
 public class CodeReaderFactoryFactory {
     private static final String FILE_LINE_DELIMITER = "\n";
     public static final String JAVA_LANG = "Java";
@@ -126,7 +128,7 @@ public class CodeReaderFactoryFactory {
 
         CodeTreeNodeConverter javaCodeTreeNodeConverter = new JavaCodeTreeNodeConverter();
         CodeTreeNodeConverter pythonCodeTreeNodeConverter = new PythonCodeTreeNodeConverter();
-        CodeTreeNodeConverter defaultCodeTreeNodeConverter = content -> new CodeTree(-1);
+        CodeTreeNodeConverter defaultCodeTreeNodeConverter = content -> new CodeTree(NOT_SUPPORT_CODE);
 
         Map<String, CodeReader<CodeFileTree>> readerMap = new HashMap<>();
         CodeFileTreeReader pythonReader = new CodeFileTreeReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorPython, pythonCodeTreeNodeConverter);

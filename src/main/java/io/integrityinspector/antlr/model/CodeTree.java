@@ -10,9 +10,9 @@ import java.util.Objects;
 
 public class CodeTree implements TreeNode {
 
-    private final Integer state;
+    private Integer state;
 
-    private final List<CodeTree> children = new ArrayList<>();
+    private List<CodeTree> children = new ArrayList<>();
 
     private CodeTree parent;
 
@@ -22,6 +22,18 @@ public class CodeTree implements TreeNode {
 
     public CodeTree(Integer state) {
         this.state = state;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public void setChildren(List<CodeTree> children) {
+        this.children = children;
     }
 
     @Override
@@ -55,7 +67,6 @@ public class CodeTree implements TreeNode {
             case OP_DELETE_NODE:
             case OP_INSERT_NODE:
                 return 1;
-
             default:
                 return this.state.equals(((CodeTree) other).state) ? 0 : 1;
         }

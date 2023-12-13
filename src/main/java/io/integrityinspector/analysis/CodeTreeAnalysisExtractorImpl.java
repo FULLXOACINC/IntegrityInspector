@@ -34,6 +34,7 @@ public class CodeTreeAnalysisExtractorImpl implements CodeTreeAnalysisExtractor 
                     .stream()
                     .map(TreeCheck::getTreeSimilarity)
                     .sorted(TREE_SCORE_COMPARATOR)
+                    .filter(x -> x.getSimilarityScore() != Integer.MAX_VALUE)
                     .limit(projectLimit)
                     .collect(Collectors.toList());
 

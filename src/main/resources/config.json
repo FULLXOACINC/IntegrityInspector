@@ -1,6 +1,6 @@
 {
   "analysisConfig": {
-    "projectLimit": 3,
+    "projectLimit": 1,
     "lineSimilarLimit": 4,
     "maxLineLengthDiff": 15,
     "minLineLength": 5,
