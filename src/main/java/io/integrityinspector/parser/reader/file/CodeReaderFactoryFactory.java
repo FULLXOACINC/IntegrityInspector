@@ -1,6 +1,8 @@
 package io.integrityinspector.parser.reader.file;
 
 import io.integrityinspector.antlr.core.CodeTreeNodeConverter;
+import io.integrityinspector.antlr.core.CodeTreeParser;
+import io.integrityinspector.antlr.core.CodeTreeParserImpl;
 import io.integrityinspector.antlr.java.JavaCodeTreeNodeConverter;
 import io.integrityinspector.antlr.model.CodeTree;
 import io.integrityinspector.antlr.python.PythonCodeTreeNodeConverter;
@@ -130,12 +132,14 @@ public class CodeReaderFactoryFactory {
         CodeTreeNodeConverter pythonCodeTreeNodeConverter = new PythonCodeTreeNodeConverter();
         CodeTreeNodeConverter defaultCodeTreeNodeConverter = content -> new CodeTree(NOT_SUPPORT_CODE);
 
+        CodeTreeParser codeTreeParser = new CodeTreeParserImpl();
+
         Map<String, CodeReader<CodeFileTree>> readerMap = new HashMap<>();
-        CodeFileTreeReader pythonReader = new CodeFileTreeReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorPython, pythonCodeTreeNodeConverter);
+        CodeFileTreeReader pythonReader = new CodeFileTreeReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorPython, pythonCodeTreeNodeConverter, codeTreeParser);
         readerMap.put(PYTHON_KEY, pythonReader);
-        readerMap.put(JAVA_KEY, new CodeFileTreeReader(JAVA_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorJava, javaCodeTreeNodeConverter));
+        readerMap.put(JAVA_KEY, new CodeFileTreeReader(JAVA_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorJava, javaCodeTreeNodeConverter, codeTreeParser));
         readerMap.put(IPYNB_KEY, new IpynbReader<>(pythonReader));
-        CodeReader<CodeFileTree> defaultReader = new CodeFileTreeReader(TEXT, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorDefault, defaultCodeTreeNodeConverter);
+        CodeReader<CodeFileTree> defaultReader = new CodeFileTreeReader(TEXT, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorDefault, defaultCodeTreeNodeConverter, codeTreeParser);
 
         return new CodeReaderFactory<>(defaultReader, readerMap, additionalFileExtensions);
     }

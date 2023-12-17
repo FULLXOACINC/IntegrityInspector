@@ -7,19 +7,17 @@ import io.integrityinspector.model.Project;
 import io.integrityinspector.model.TreeSimilarity;
 import io.integrityinspector.model.filecheker.FileCheck;
 import io.integrityinspector.model.filecheker.FileTreeCheck;
+import lombok.AllArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
+@AllArgsConstructor
 public class FileTreeChecker implements FileChecker<FileTreeCheck> {
-    private static final TreeSimilarityCalculator TREE_SIMILARITY_CALCULATOR = new TreeSimilarityCalculator();
+    private final TreeSimilarityCalculator treeSimilarityCalculator;
     private final FileChecker<FileCheck> fileStringChecker;
 
-    public FileTreeChecker(FileChecker<FileCheck> fileStringChecker) {
-        this.fileStringChecker = fileStringChecker;
-    }
 
     public FileTreeCheck checkFile(CodeFile codeFile, List<Project> baselineProjects) {
         FileCheck fileCheck = fileStringChecker.checkFile(codeFile, baselineProjects);
@@ -45,7 +43,7 @@ public class FileTreeChecker implements FileChecker<FileTreeCheck> {
                 if (Objects.equals(codeFile.getLanguage(), baselineCodeFile.getLanguage()) &&
                         baselineCodeFile instanceof CodeFileTree) {
                     CodeTree baselineCodeFileTree = ((CodeFileTree) baselineCodeFile).getCodeTree();
-                    int similarity = TREE_SIMILARITY_CALCULATOR.calculateTreeSimilarity(codeFileTree, baselineCodeFileTree);
+                    int similarity = treeSimilarityCalculator.calculateTreeSimilarity(codeFileTree, baselineCodeFileTree);
                     result.add(new TreeSimilarity(baselineProject.getName(), baselineCodeFile.getSourceFile(), similarity));
                 }
             }

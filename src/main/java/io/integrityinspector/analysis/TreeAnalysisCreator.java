@@ -46,7 +46,7 @@ public class TreeAnalysisCreator implements AnalysisCreator {
         return analysis;
     }
 
-    private static List<FileTreeCheck> getFileTreeChecks(List<FileCheck> fileChecks, List<TreeCheckList> fileTreeChecks) {
+    private List<FileTreeCheck> getFileTreeChecks(List<FileCheck> fileChecks, List<TreeCheckList> fileTreeChecks) {
         List<FileTreeCheck> finalFileTreeChecks = new ArrayList<>();
         for (FileCheck fileCheck : fileChecks) {
             for (TreeCheckList fileTreeCheck : fileTreeChecks) {

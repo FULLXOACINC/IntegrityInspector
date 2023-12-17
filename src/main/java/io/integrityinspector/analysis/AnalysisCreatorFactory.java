@@ -21,7 +21,7 @@ public class AnalysisCreatorFactory {
         }
     }
 
-    private static StringAnalysisCreator createStringAnalysisCreator(AppConfig config) {
+    private StringAnalysisCreator createStringAnalysisCreator(AppConfig config) {
         AnalysisConfig analysisConfig = config.getAnalysisConfig();
         PlagiarismLineChecker plagiarismLineChecker = new PlagiarismLineChecker(analysisConfig.getMinLineLength(), analysisConfig.getMaxLineLengthDiff(), analysisConfig.getLevenshteinSimilarityPercent());
         FileChecker<FileCheck> fileStringChecker = new FileStringChecker(plagiarismLineChecker, analysisConfig.getLineSimilarLimit());
@@ -34,14 +34,14 @@ public class AnalysisCreatorFactory {
         return new StringAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, zzh1UniquenessCoefficientCalculator);
     }
 
-    private static ProjectAnalyzer<FileCheck> getFileCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
+    private ProjectAnalyzer<FileCheck> getFileCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
         ProjectChecker<FileCheck, FileChecker<FileCheck>> fullProjectChecker = new ProjectChecker<>(fileStringChecker);
         AnalysisTaskFactory<FileCheck, FileChecker<FileCheck>> analysisTaskFactory = new AnalysisTaskFactory<>(fullProjectChecker);
         ChunkExtractor<Project> chunkExtractor = new ChunkExtractorImpl<>();
         return new MultithreadingProjectAnalyzer<>(analysisConfig.getMultithreadingConfig().getThreadsCount(), chunkExtractor, analysisTaskFactory);
     }
 
-    private static TreeAnalysisCreator createTreeAnalysisCreator(AppConfig config) {
+    private TreeAnalysisCreator createTreeAnalysisCreator(AppConfig config) {
         AnalysisConfig analysisConfig = config.getAnalysisConfig();
         PlagiarismLineChecker plagiarismLineChecker = new PlagiarismLineChecker(analysisConfig.getMinLineLength(), analysisConfig.getMaxLineLengthDiff(), analysisConfig.getLevenshteinSimilarityPercent());
         FileChecker<FileCheck> fileStringChecker = new FileStringChecker(plagiarismLineChecker, analysisConfig.getLineSimilarLimit());
@@ -56,8 +56,9 @@ public class AnalysisCreatorFactory {
         return new TreeAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, codeTreeAnalysisExtractor, zzh1UniquenessCoefficientCalculator);
     }
 
-    private static ProjectAnalyzer<FileTreeCheck> getFileTreeCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
-        FileChecker<FileTreeCheck> fileTreeChecker = new FileTreeChecker(fileStringChecker);
+    private ProjectAnalyzer<FileTreeCheck> getFileTreeCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
+        FileChecker<FileTreeCheck> fileTreeChecker = new FileTreeChecker(new TreeSimilarityCalculator(), fileStringChecker);
+
         ProjectChecker<FileTreeCheck, FileChecker<FileTreeCheck>> fullProjectChecker = new ProjectChecker<>(fileTreeChecker);
         AnalysisTaskFactory<FileTreeCheck, FileChecker<FileTreeCheck>> analysisTaskFactory = new AnalysisTaskFactory<>(fullProjectChecker);
         ChunkExtractor<Project> chunkExtractor = new ChunkExtractorImpl<>();
