@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class ProjectParserImpl implements ProjectParser {
-    private static final Logger LOG = LoggerFactory.getLogger(ProjectParserImpl.class);
+public class DefaultProjectParser implements ProjectParser {
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultProjectParser.class);
     private final ProjectCodeParser projectCodeParser;
 
-    public ProjectParserImpl(ProjectCodeParser projectCodeParser) {
+    public DefaultProjectParser(ProjectCodeParser projectCodeParser) {
         this.projectCodeParser = projectCodeParser;
     }
 

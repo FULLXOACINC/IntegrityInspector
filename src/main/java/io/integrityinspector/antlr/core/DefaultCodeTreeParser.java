@@ -4,8 +4,8 @@ import io.integrityinspector.antlr.model.CodeTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CodeTreeParserImpl implements CodeTreeParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CodeTreeParserImpl.class);
+public class DefaultCodeTreeParser implements CodeTreeParser {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultCodeTreeParser.class);
 
     public CodeTree parseCodeTree(String fileName, String content, CodeTreeNodeConverter converter) {
         CodeTree codeTree = null;

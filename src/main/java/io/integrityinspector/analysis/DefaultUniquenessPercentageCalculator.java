@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
-public class UniquenessPercentageCalculatorImpl implements UniquenessPercentageCalculator {
+public class DefaultUniquenessPercentageCalculator implements UniquenessPercentageCalculator {
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     private static final BigDecimal ZERO = BigDecimal.valueOf(0).setScale(2, RoundingMode.HALF_DOWN);
     private static final int SCALE = 2;

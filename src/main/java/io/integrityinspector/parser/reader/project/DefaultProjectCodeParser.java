@@ -13,12 +13,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class ProjectCodeParserImpl implements ProjectCodeParser {
-    private static final Logger LOG = LoggerFactory.getLogger(ProjectCodeParserImpl.class);
+public class DefaultProjectCodeParser implements ProjectCodeParser {
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultProjectCodeParser.class);
     private final CodeReaderFactory<? extends CodeFile> codeReaderFactory;
     private final List<String> listOfSupportedExtensions;
 
-    public ProjectCodeParserImpl(CodeReaderFactory<? extends CodeFile> codeReaderFactory, List<String> listOfSupportedExtensions) {
+    public DefaultProjectCodeParser(CodeReaderFactory<? extends CodeFile> codeReaderFactory, List<String> listOfSupportedExtensions) {
         this.codeReaderFactory = codeReaderFactory;
         this.listOfSupportedExtensions = listOfSupportedExtensions != null ? listOfSupportedExtensions : Collections.emptyList();
     }

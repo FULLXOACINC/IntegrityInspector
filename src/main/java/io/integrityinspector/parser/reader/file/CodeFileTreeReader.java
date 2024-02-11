@@ -19,8 +19,8 @@ public class CodeFileTreeReader implements CodeReader<CodeFileTree> {
     private final String language;
     private final CommentCleaner commentCleaner;
     private final LineCleaner lineCleaner;
-    private final DefaultCodeFileReader fileReader;
-    private final LineForCheckExtractor lineForCheckExtractor;
+    private final CodeFileContextReader fileReader;
+    private final LineForCheckExtractor defaultLineForCheckExtractor;
     private final LineValidator lineValidator;
     private final CodeTreeNodeConverter codeTreeNodeConverter;
     private final CodeTreeParser codeTreeParser;
@@ -34,7 +34,7 @@ public class CodeFileTreeReader implements CodeReader<CodeFileTree> {
     @Override
     public CodeFileTree createCodeFile(String file, String fileContext) {
         String commentFilteredFileContent = commentCleaner.removeComments(fileContext);
-        List<Line> lineForCheck = lineForCheckExtractor.extractLinesForCheck(
+        List<Line> lineForCheck = defaultLineForCheckExtractor.extractLinesForCheck(
                 commentFilteredFileContent,
                 lineValidator::isLineNeedAddToCheckList,
                 lineCleaner::cleanLine

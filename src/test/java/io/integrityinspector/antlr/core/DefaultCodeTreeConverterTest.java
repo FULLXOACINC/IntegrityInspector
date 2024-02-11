@@ -9,9 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-
-public class CodeTreeConverterImplTest {
+public class DefaultCodeTreeConverterTest {
     private static final String code =
             "def main():\n" +
                     "        print(\"Test\")\n" +
@@ -20,7 +18,7 @@ public class CodeTreeConverterImplTest {
 
     @Test
     public void convertCodeTreeNodePositiveTest() {
-        CodeTreeConverter converter = new CodeTreeConverterImpl();
+        CodeTreeConverter converter = new DefaultCodeTreeConverter();
         CharStream charStream = CharStreams.fromString(code);
         Python3Lexer lexer = new Python3Lexer(charStream);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

@@ -2,7 +2,7 @@ package io.integrityinspector.parser.reader.file;
 
 import io.integrityinspector.antlr.core.CodeTreeNodeConverter;
 import io.integrityinspector.antlr.core.CodeTreeParser;
-import io.integrityinspector.antlr.core.CodeTreeParserImpl;
+import io.integrityinspector.antlr.core.DefaultCodeTreeParser;
 import io.integrityinspector.antlr.java.JavaCodeTreeNodeConverter;
 import io.integrityinspector.antlr.model.CodeTree;
 import io.integrityinspector.antlr.python.PythonCodeTreeNodeConverter;
@@ -47,25 +47,25 @@ public class CodeReaderFactoryFactory {
         ProgrammingLangLineStartExclusion langLineStartExclusion = parseCodeConfig.getProgrammingLangLineStartExclusion();
 
 
-        CommentCleaner fileCommentCleanerDefault = new CommonFileCommentCleaner();
-        LineCleaner defaultLineCleaner = new DefaultLineCleaner();
-        DefaultCodeFileReader defaultCodeFileReader = new DefaultCodeFileReader(FILE_LINE_DELIMITER);
-        LineForCheckExtractor lineForCheckExtractor = new LineForCheckExtractor(FILE_LINE_DELIMITER);
+        CommentCleaner fileCommentCleaner = new CommonFileCommentCleaner();
+        LineCleaner lineCleaner = new DefaultLineCleaner();
+        CodeFileContextReader codeFileContextReader = new DefaultCodeFileContextReader(FILE_LINE_DELIMITER);
+        LineForCheckExtractor lineForCheckExtractor = new DefaultLineForCheckExtractor(FILE_LINE_DELIMITER);
 
-        LineValidator lineValidatorDefault = new LineValidatorImpl(Collections.emptySet(), defaultLineCleaner);
-        LineValidator lineValidatorForCpp = new LineValidatorImpl(langLineStartExclusion.getCpp(), defaultLineCleaner);
-        LineValidator lineValidatorCSharp = new LineValidatorImpl(langLineStartExclusion.getCSharp(), defaultLineCleaner);
-        LineValidator lineValidatorJava = new LineValidatorImpl(langLineStartExclusion.getJava(), defaultLineCleaner);
-        LineValidator lineValidatorJs = new LineValidatorImpl(langLineStartExclusion.getJs(), defaultLineCleaner);
-        LineValidator lineValidatorPython = new LineValidatorImpl(langLineStartExclusion.getPython(), defaultLineCleaner);
+        LineValidator lineValidatorDefault = new DefaultLineValidator(Collections.emptySet(), lineCleaner);
+        LineValidator lineValidatorForCpp = new DefaultLineValidator(langLineStartExclusion.getCpp(), lineCleaner);
+        LineValidator lineValidatorCSharp = new DefaultLineValidator(langLineStartExclusion.getCSharp(), lineCleaner);
+        LineValidator lineValidatorJava = new DefaultLineValidator(langLineStartExclusion.getJava(), lineCleaner);
+        LineValidator lineValidatorJs = new DefaultLineValidator(langLineStartExclusion.getJs(), lineCleaner);
+        LineValidator lineValidatorPython = new DefaultLineValidator(langLineStartExclusion.getPython(), lineCleaner);
 
         CommentCleaner pythonFileCommentCleaner = new PythonFileCommentCleaner();
         LineCleaner pythonLineCommentCleaner = new PythonLineCommentCleaner();
         if (appConfig.getParseCodeConfig().getNeedParseTree()) {
             return createCodeFileCodeReaderTreeFactory(additionalFileExtensions,
-                    fileCommentCleanerDefault,
-                    defaultLineCleaner,
-                    defaultCodeFileReader,
+                    fileCommentCleaner,
+                    lineCleaner,
+                    codeFileContextReader,
                     lineForCheckExtractor,
                     lineValidatorDefault,
                     lineValidatorJava,
@@ -75,9 +75,9 @@ public class CodeReaderFactoryFactory {
             );
         }
         return createCodeFileCodeReaderFactory(additionalFileExtensions,
-                fileCommentCleanerDefault,
-                defaultLineCleaner,
-                defaultCodeFileReader,
+                fileCommentCleaner,
+                lineCleaner,
+                codeFileContextReader,
                 lineForCheckExtractor,
                 lineValidatorDefault,
                 lineValidatorForCpp,
@@ -91,9 +91,9 @@ public class CodeReaderFactoryFactory {
     }
 
     private CodeReaderFactory<CodeFile> createCodeFileCodeReaderFactory(List<AdditionalFileExtensionConfig> additionalFileExtensions,
-                                                                        CommentCleaner fileCommentCleanerDefault,
-                                                                        LineCleaner defaultLineCleaner,
-                                                                        DefaultCodeFileReader defaultCodeFileReader,
+                                                                        CommentCleaner fileCommentCleaner,
+                                                                        LineCleaner lineCleaner,
+                                                                        CodeFileContextReader codeFileContextReader,
                                                                         LineForCheckExtractor lineForCheckExtractor,
                                                                         LineValidator lineValidatorDefault,
                                                                         LineValidator lineValidatorForCpp,
@@ -105,22 +105,22 @@ public class CodeReaderFactoryFactory {
                                                                         LineCleaner pythonLineCommentCleaner) {
 
         Map<String, CodeReader<CodeFile>> readerMap = new HashMap<>();
-        CodeFileReader pythonReader = new CodeFileReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorPython);
+        CodeFileReader pythonReader = new CodeFileReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorPython);
         readerMap.put(PYTHON_KEY, pythonReader);
-        readerMap.put(JAVA_KEY, new CodeFileReader(JAVA_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorJava));
-        readerMap.put(C_KEY, new CodeFileReader(CPP_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorForCpp));
-        readerMap.put(JS_KEY, new CodeFileReader(JS_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorJs));
-        readerMap.put(C_SHARP_KEY, new CodeFileReader(C_SHARP_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorCSharp));
+        readerMap.put(JAVA_KEY, new CodeFileReader(JAVA_LANG, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorJava));
+        readerMap.put(C_KEY, new CodeFileReader(CPP_LANG, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorForCpp));
+        readerMap.put(JS_KEY, new CodeFileReader(JS_LANG, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorJs));
+        readerMap.put(C_SHARP_KEY, new CodeFileReader(C_SHARP_LANG, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorCSharp));
         readerMap.put(IPYNB_KEY, new IpynbReader<>(pythonReader));
-        CodeReader<CodeFile> defaultReader = new CodeFileReader(TEXT, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorDefault);
+        CodeReader<CodeFile> defaultReader = new CodeFileReader(TEXT, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorDefault);
 
         return new CodeReaderFactory<>(defaultReader, readerMap, additionalFileExtensions);
     }
 
     private CodeReaderFactory<CodeFileTree> createCodeFileCodeReaderTreeFactory(List<AdditionalFileExtensionConfig> additionalFileExtensions,
-                                                                                CommentCleaner fileCommentCleanerDefault,
-                                                                                LineCleaner defaultLineCleaner,
-                                                                                DefaultCodeFileReader defaultCodeFileReader,
+                                                                                CommentCleaner fileCommentCleaner,
+                                                                                LineCleaner lineCleaner,
+                                                                                CodeFileContextReader codeFileContextReader,
                                                                                 LineForCheckExtractor lineForCheckExtractor,
                                                                                 LineValidator lineValidatorDefault,
                                                                                 LineValidator lineValidatorJava,
@@ -132,14 +132,14 @@ public class CodeReaderFactoryFactory {
         CodeTreeNodeConverter pythonCodeTreeNodeConverter = new PythonCodeTreeNodeConverter();
         CodeTreeNodeConverter defaultCodeTreeNodeConverter = content -> new CodeTree(NOT_SUPPORT_CODE);
 
-        CodeTreeParser codeTreeParser = new CodeTreeParserImpl();
+        CodeTreeParser codeTreeParser = new DefaultCodeTreeParser();
 
         Map<String, CodeReader<CodeFileTree>> readerMap = new HashMap<>();
-        CodeFileTreeReader pythonReader = new CodeFileTreeReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorPython, pythonCodeTreeNodeConverter, codeTreeParser);
+        CodeFileTreeReader pythonReader = new CodeFileTreeReader(PYTHON_LANG, pythonFileCommentCleaner, pythonLineCommentCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorPython, pythonCodeTreeNodeConverter, codeTreeParser);
         readerMap.put(PYTHON_KEY, pythonReader);
-        readerMap.put(JAVA_KEY, new CodeFileTreeReader(JAVA_LANG, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorJava, javaCodeTreeNodeConverter, codeTreeParser));
+        readerMap.put(JAVA_KEY, new CodeFileTreeReader(JAVA_LANG, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorJava, javaCodeTreeNodeConverter, codeTreeParser));
         readerMap.put(IPYNB_KEY, new IpynbReader<>(pythonReader));
-        CodeReader<CodeFileTree> defaultReader = new CodeFileTreeReader(TEXT, fileCommentCleanerDefault, defaultLineCleaner, defaultCodeFileReader, lineForCheckExtractor, lineValidatorDefault, defaultCodeTreeNodeConverter, codeTreeParser);
+        CodeReader<CodeFileTree> defaultReader = new CodeFileTreeReader(TEXT, fileCommentCleaner, lineCleaner, codeFileContextReader, lineForCheckExtractor, lineValidatorDefault, defaultCodeTreeNodeConverter, codeTreeParser);
 
         return new CodeReaderFactory<>(defaultReader, readerMap, additionalFileExtensions);
     }

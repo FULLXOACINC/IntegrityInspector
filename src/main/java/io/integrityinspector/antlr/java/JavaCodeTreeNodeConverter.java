@@ -1,8 +1,8 @@
 package io.integrityinspector.antlr.java;
 
 import io.integrityinspector.antlr.core.CodeTreeConverter;
-import io.integrityinspector.antlr.core.CodeTreeConverterImpl;
 import io.integrityinspector.antlr.core.CodeTreeNodeConverter;
+import io.integrityinspector.antlr.core.DefaultCodeTreeConverter;
 import io.integrityinspector.antlr.java.gen.JavaLexer;
 import io.integrityinspector.antlr.java.gen.JavaParser;
 import io.integrityinspector.antlr.java.gen.JavaParserBaseListener;
@@ -17,7 +17,7 @@ public class JavaCodeTreeNodeConverter implements CodeTreeNodeConverter {
     private final CodeTreeConverter codeTreeConverter;
 
     public JavaCodeTreeNodeConverter() {
-        codeTreeConverter = new CodeTreeConverterImpl();
+        codeTreeConverter = new DefaultCodeTreeConverter();
     }
 
     JavaCodeTreeNodeConverter(CodeTreeConverter codeTreeConverter) {

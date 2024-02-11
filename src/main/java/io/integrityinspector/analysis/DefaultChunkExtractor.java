@@ -3,7 +3,7 @@ package io.integrityinspector.analysis;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChunkExtractorImpl<T> implements ChunkExtractor<T> {
+public class DefaultChunkExtractor<T> implements ChunkExtractor<T> {
 
     @Override
     public List<List<T>> extractChunks(List<T> list, int chunkCount) {

@@ -5,7 +5,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-public class CodeTreeConverterImpl implements CodeTreeConverter {
+public class DefaultCodeTreeConverter implements CodeTreeConverter {
     @Override
     public CodeTree convertCodeTreeNode(ParseTree tree) {
         CodeTree node = new CodeTree(-1);

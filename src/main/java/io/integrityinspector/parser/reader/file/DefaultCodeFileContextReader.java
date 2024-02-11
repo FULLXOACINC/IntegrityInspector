@@ -9,7 +9,7 @@ import java.io.IOException;
 
 @AllArgsConstructor
 @EqualsAndHashCode
-public class DefaultCodeFileReader {
+public class DefaultCodeFileContextReader implements CodeFileContextReader {
     private String lineDelimiter;
 
     public String readFileFullContext(String file) throws IOException {

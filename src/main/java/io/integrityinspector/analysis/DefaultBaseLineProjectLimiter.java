@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class BaseLineProjectLimiterImpl implements BaseLineProjectLimiter {
+public class DefaultBaseLineProjectLimiter implements BaseLineProjectLimiter {
 
     @Override
     public List<Project> limitBaselineProjectList(List<ProjectCount> countsPerProject, List<Project> baselineProjects) {

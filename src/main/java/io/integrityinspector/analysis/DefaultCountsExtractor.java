@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static io.integrityinspector.model.ProjectCount.PROJECT_COUNT_COMPARATOR;
 
 @AllArgsConstructor
-public class CountsExtractorImpl implements CountsExtractor {
+public class DefaultCountsExtractor implements CountsExtractor {
 
     private int limit;
 

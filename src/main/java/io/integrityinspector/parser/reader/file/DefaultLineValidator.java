@@ -4,12 +4,12 @@ import io.integrityinspector.parser.cleaner.line.LineCleaner;
 
 import java.util.Set;
 
-public class LineValidatorImpl implements LineValidator {
+public class DefaultLineValidator implements LineValidator {
 
     private final Set<String> lineStartSet;
     private final LineCleaner lineCleaner;
 
-    public LineValidatorImpl(Set<String> lineStartSet, LineCleaner lineCleaner) {
+    public DefaultLineValidator(Set<String> lineStartSet, LineCleaner lineCleaner) {
         this.lineStartSet = lineStartSet;
         this.lineCleaner = lineCleaner;
     }

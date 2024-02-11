@@ -14,15 +14,14 @@ public class CodeFileReader implements CodeReader<CodeFile> {
     private final String language;
     private final CommentCleaner commentCleaner;
     private final LineCleaner lineCleaner;
-    private final DefaultCodeFileReader fileReader;
+    private final CodeFileContextReader fileReader;
     private final LineForCheckExtractor lineForCheckExtractor;
-
     private final LineValidator lineValidator;
 
     public CodeFileReader(String language,
                           CommentCleaner commentCleaner,
                           LineCleaner lineCleaner,
-                          DefaultCodeFileReader fileReader,
+                          CodeFileContextReader fileReader,
                           LineForCheckExtractor lineForCheckExtractor,
                           LineValidator lineValidator
     ) {

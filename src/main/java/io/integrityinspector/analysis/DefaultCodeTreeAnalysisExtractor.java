@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 import static io.integrityinspector.model.TreeSimilarity.TREE_SCORE_COMPARATOR;
 
 @AllArgsConstructor
-public class CodeTreeAnalysisExtractorImpl implements CodeTreeAnalysisExtractor {
+public class DefaultCodeTreeAnalysisExtractor implements CodeTreeAnalysisExtractor {
 
     private int projectLimit;
 

@@ -1,8 +1,8 @@
 package io.integrityinspector.antlr.python;
 
 import io.integrityinspector.antlr.core.CodeTreeConverter;
-import io.integrityinspector.antlr.core.CodeTreeConverterImpl;
 import io.integrityinspector.antlr.core.CodeTreeNodeConverter;
+import io.integrityinspector.antlr.core.DefaultCodeTreeConverter;
 import io.integrityinspector.antlr.model.CodeTree;
 import io.integrityinspector.antlr.python.gen.Python3Lexer;
 import io.integrityinspector.antlr.python.gen.Python3Parser;
@@ -15,7 +15,7 @@ public class PythonCodeTreeNodeConverter implements CodeTreeNodeConverter {
     private final CodeTreeConverter codeTreeConverter;
 
     public PythonCodeTreeNodeConverter() {
-        codeTreeConverter = new CodeTreeConverterImpl();
+        codeTreeConverter = new DefaultCodeTreeConverter();
     }
 
     PythonCodeTreeNodeConverter(CodeTreeConverter codeTreeConverter) {

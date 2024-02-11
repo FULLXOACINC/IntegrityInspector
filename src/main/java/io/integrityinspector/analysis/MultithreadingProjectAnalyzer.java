@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
 @AllArgsConstructor
 public class MultithreadingProjectAnalyzer<T extends FileCheck, K extends FileChecker<T>> implements ProjectAnalyzer<T> {
     private final int nThreads;
-    private final ChunkExtractor<Project> chunkExtractorImpl;
+    private final ChunkExtractor<Project> chunkExtractor;
     private final AnalysisTaskFactory<T, K> analysisTaskFactory;
 
     @Override
@@ -24,7 +24,7 @@ public class MultithreadingProjectAnalyzer<T extends FileCheck, K extends FileCh
         List<Future<List<T>>> futures = new ArrayList<>();
         List<T> result = new ArrayList<>();
 
-        List<List<Project>> chunkedBaseLineProject = chunkExtractorImpl.extractChunks(list, nThreads);
+        List<List<Project>> chunkedBaseLineProject = chunkExtractor.extractChunks(list, nThreads);
 
         for (List<Project> chunk : chunkedBaseLineProject) {
 

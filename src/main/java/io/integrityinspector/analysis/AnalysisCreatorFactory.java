@@ -26,18 +26,18 @@ public class AnalysisCreatorFactory {
         PlagiarismLineChecker plagiarismLineChecker = new PlagiarismLineChecker(analysisConfig.getMinLineLength(), analysisConfig.getMaxLineLengthDiff(), analysisConfig.getLevenshteinSimilarityPercent());
         FileChecker<FileCheck> fileStringChecker = new FileStringChecker(plagiarismLineChecker, analysisConfig.getLineSimilarLimit());
         ProjectAnalyzer<FileCheck> projectAnalyzer = getFileCheckProjectAnalyzer(fileStringChecker, analysisConfig);
-        CountsExtractor countsExtractor = new CountsExtractorImpl(analysisConfig.getProjectLimit());
-        BaseLineProjectLimiter baseLineProjectLimiter = new BaseLineProjectLimiterImpl();
+        CountsExtractor countsExtractor = new DefaultCountsExtractor(analysisConfig.getProjectLimit());
+        BaseLineProjectLimiter baseLineProjectLimiter = new DefaultBaseLineProjectLimiter();
         ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker = new ProjectChecker<>(fileStringChecker);
-        UniquenessPercentageCalculator uniquenessPercentageCalculator = new UniquenessPercentageCalculatorImpl();
-        Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator = new Zzh1UniquenessCoefficientCalculatorImpl();
+        UniquenessPercentageCalculator uniquenessPercentageCalculator = new DefaultUniquenessPercentageCalculator();
+        Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator = new DefualtZzh1UniquenessCoefficientCalculator();
         return new StringAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, zzh1UniquenessCoefficientCalculator);
     }
 
     private ProjectAnalyzer<FileCheck> getFileCheckProjectAnalyzer(FileChecker<FileCheck> fileStringChecker, AnalysisConfig analysisConfig) {
         ProjectChecker<FileCheck, FileChecker<FileCheck>> fullProjectChecker = new ProjectChecker<>(fileStringChecker);
         AnalysisTaskFactory<FileCheck, FileChecker<FileCheck>> analysisTaskFactory = new AnalysisTaskFactory<>(fullProjectChecker);
-        ChunkExtractor<Project> chunkExtractor = new ChunkExtractorImpl<>();
+        ChunkExtractor<Project> chunkExtractor = new DefaultChunkExtractor<>();
         return new MultithreadingProjectAnalyzer<>(analysisConfig.getMultithreadingConfig().getThreadsCount(), chunkExtractor, analysisTaskFactory);
     }
 
@@ -46,13 +46,13 @@ public class AnalysisCreatorFactory {
         PlagiarismLineChecker plagiarismLineChecker = new PlagiarismLineChecker(analysisConfig.getMinLineLength(), analysisConfig.getMaxLineLengthDiff(), analysisConfig.getLevenshteinSimilarityPercent());
         FileChecker<FileCheck> fileStringChecker = new FileStringChecker(plagiarismLineChecker, analysisConfig.getLineSimilarLimit());
         ProjectAnalyzer<FileTreeCheck> projectAnalyzer = getFileTreeCheckProjectAnalyzer(fileStringChecker, analysisConfig);
-        CountsExtractor countsExtractor = new CountsExtractorImpl(analysisConfig.getProjectLimit());
-        BaseLineProjectLimiter baseLineProjectLimiter = new BaseLineProjectLimiterImpl();
+        CountsExtractor countsExtractor = new DefaultCountsExtractor(analysisConfig.getProjectLimit());
+        BaseLineProjectLimiter baseLineProjectLimiter = new DefaultBaseLineProjectLimiter();
         ProjectChecker<FileCheck, FileChecker<FileCheck>> stringProjectChecker = new ProjectChecker<>(fileStringChecker);
-        UniquenessPercentageCalculator uniquenessPercentageCalculator = new UniquenessPercentageCalculatorImpl();
+        UniquenessPercentageCalculator uniquenessPercentageCalculator = new DefaultUniquenessPercentageCalculator();
 
-        CodeTreeAnalysisExtractor codeTreeAnalysisExtractor = new CodeTreeAnalysisExtractorImpl(analysisConfig.getProjectLimit());
-        Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator = new Zzh1UniquenessCoefficientCalculatorImpl();
+        CodeTreeAnalysisExtractor codeTreeAnalysisExtractor = new DefaultCodeTreeAnalysisExtractor(analysisConfig.getProjectLimit());
+        Zzh1UniquenessCoefficientCalculator zzh1UniquenessCoefficientCalculator = new DefualtZzh1UniquenessCoefficientCalculator();
         return new TreeAnalysisCreator(projectAnalyzer, countsExtractor, baseLineProjectLimiter, stringProjectChecker, uniquenessPercentageCalculator, codeTreeAnalysisExtractor, zzh1UniquenessCoefficientCalculator);
     }
 
@@ -61,7 +61,7 @@ public class AnalysisCreatorFactory {
 
         ProjectChecker<FileTreeCheck, FileChecker<FileTreeCheck>> fullProjectChecker = new ProjectChecker<>(fileTreeChecker);
         AnalysisTaskFactory<FileTreeCheck, FileChecker<FileTreeCheck>> analysisTaskFactory = new AnalysisTaskFactory<>(fullProjectChecker);
-        ChunkExtractor<Project> chunkExtractor = new ChunkExtractorImpl<>();
+        ChunkExtractor<Project> chunkExtractor = new DefaultChunkExtractor<>();
         return new MultithreadingProjectAnalyzer<>(analysisConfig.getMultithreadingConfig().getThreadsCount(), chunkExtractor, analysisTaskFactory);
     }
 }

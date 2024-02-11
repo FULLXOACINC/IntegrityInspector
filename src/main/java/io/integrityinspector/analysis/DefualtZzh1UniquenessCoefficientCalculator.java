@@ -3,7 +3,7 @@ package io.integrityinspector.analysis;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class Zzh1UniquenessCoefficientCalculatorImpl implements Zzh1UniquenessCoefficientCalculator {
+public class DefualtZzh1UniquenessCoefficientCalculator implements Zzh1UniquenessCoefficientCalculator {
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     private static final BigDecimal ONE = BigDecimal.valueOf(1);
     private static final int SCALE = 2;
