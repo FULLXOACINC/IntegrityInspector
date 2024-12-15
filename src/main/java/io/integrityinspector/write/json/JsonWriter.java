@@ -3,7 +3,6 @@ package io.integrityinspector.write.json;
 import com.google.gson.Gson;
 import io.integrityinspector.model.Analysis;
 import io.integrityinspector.write.core.AnalysisWriter;
-import io.integrityinspector.write.jtwig.JtwigWriter;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
