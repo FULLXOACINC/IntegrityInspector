@@ -16,4 +16,5 @@ public class AnalysisConfig {
     private int minLineLength;
     private double levenshteinSimilarityPercent;
     private MultithreadingConfig multithreadingConfig;
+    private String reportResultFormat;
 }

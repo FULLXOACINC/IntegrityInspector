@@ -39,7 +39,7 @@ public class SingleProjectIntegrityInspector implements IntegrityInspector {
             LOG.info("Generating report ...");
 
             AnalysisWriter analysisWriter = appCoreComponents.getAnalysisWriter();
-            analysisWriter.write(analysis, checkFolder.getName(), appCoreComponents.getReportTemplate());
+            analysisWriter.write(analysis, checkFolder.getName());
         } catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }

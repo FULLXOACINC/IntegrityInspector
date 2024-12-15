@@ -12,7 +12,6 @@ import lombok.Getter;
 public class AppCoreComponents {
     ProjectParser projectParser;
     AnalysisCreator analysisCreator;
-    String reportTemplate;
     AnalysisWriter analysisWriter;
     AppConfig config;
 }

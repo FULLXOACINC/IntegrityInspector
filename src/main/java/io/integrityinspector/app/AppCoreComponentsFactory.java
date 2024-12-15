@@ -6,8 +6,8 @@ import io.integrityinspector.config.AppConfig;
 import io.integrityinspector.parser.reader.project.ProjectParser;
 import io.integrityinspector.parser.reader.project.ProjectParserFactory;
 import io.integrityinspector.write.core.AnalysisWriter;
-import io.integrityinspector.write.jtwig.JtwigTemplateNameFactory;
-import io.integrityinspector.write.jtwig.JtwigWriter;
+import io.integrityinspector.write.core.AnalysisWriterFactory;
+import io.integrityinspector.write.core.AnalysisWriterFactoryImpl;
 
 public class AppCoreComponentsFactory {
 
@@ -16,18 +16,15 @@ public class AppCoreComponentsFactory {
         AnalysisCreatorFactory analysisCreatorFactory = new AnalysisCreatorFactory();
         AnalysisCreator analysisCreator = analysisCreatorFactory.createAnalysisCreator(config);
 
-        JtwigTemplateNameFactory jtwigTemplateNameFactory = new JtwigTemplateNameFactory();
-        String templateName = jtwigTemplateNameFactory.createTemplateName(config);
-
         ProjectParserFactory projectParserFactory = new ProjectParserFactory();
         ProjectParser projectParser = projectParserFactory.createProjectParser(config);
 
-        AnalysisWriter analysisWriter = new JtwigWriter();
+        AnalysisWriterFactory analysisWriterFactory = new AnalysisWriterFactoryImpl();
+        AnalysisWriter analysisWriter = analysisWriterFactory.createAnalysisWriter(config);
 
         return new AppCoreComponents(
                 projectParser,
                 analysisCreator,
-                templateName,
                 analysisWriter,
                 config
         );

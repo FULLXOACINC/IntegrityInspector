@@ -42,7 +42,7 @@ public class AppConfigReaderTest {
         additionalFileExtensions.add(extension7);
         additionalFileExtensions.add(extension8);
 
-        AnalysisConfig analysisConfig = new AnalysisConfig(1, 2, 3, 4, 5.0, new MultithreadingConfig(6));
+        AnalysisConfig analysisConfig = new AnalysisConfig(1, 2, 3, 4, 5.0, new MultithreadingConfig(6), "json");
 
         ProgrammingLangLineStartExclusion programmingLangLineStartExclusion = new ProgrammingLangLineStartExclusion();
         programmingLangLineStartExclusion.setCpp(new HashSet<>(Arrays.asList("1", "2", "3")));
