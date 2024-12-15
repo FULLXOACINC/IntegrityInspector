@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @AllArgsConstructor
 public class JsonWriter implements AnalysisWriter {
-    private static final Logger LOG = LoggerFactory.getLogger(JtwigWriter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(JsonWriter.class);
 
     public void write(Analysis analysis, String name) throws IOException {
         Gson gson = new Gson();

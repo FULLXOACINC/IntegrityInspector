@@ -14,9 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class Analysis {
-    private List<? extends FileCheck> projectChecks;
-    private List<ProjectCount> countPerProject;
     private BigDecimal totalUniquenessPercentage;
     private BigDecimal zzh1UniquenessCoefficient;
-
+    private List<? extends FileCheck> projectChecks;
+    private List<ProjectCount> countPerProject;
 }
