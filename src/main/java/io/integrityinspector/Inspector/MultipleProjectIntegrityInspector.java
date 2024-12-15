@@ -31,7 +31,6 @@ public class MultipleProjectIntegrityInspector implements IntegrityInspector {
             List<Project> projects = parser.parseProjectListFromRootDir(parameters.getCheckingDirectory());
             AnalysisWriter analysisWriter = appCoreComponents.getAnalysisWriter();
             AnalysisCreator analysisCreator = appCoreComponents.getAnalysisCreator();
-            String reportTemplate = appCoreComponents.getReportTemplate();
             int maxUniquenessPercentageForCreatingReport = appCoreComponents
                     .getConfig()
                     .getMultipleProjectCheckConfig()
@@ -49,7 +48,7 @@ public class MultipleProjectIntegrityInspector implements IntegrityInspector {
                     LOG.info("Skipping based on maxUniquenessPercentageForCreatingReport(" + maxUniquenessPercentageForCreatingReport + "): " + analysis.getTotalUniquenessPercentage() + ", project:" + projectName);
                 } else {
                     LOG.info("Generating report ...");
-                    analysisWriter.write(analysis, projectName, reportTemplate);
+                    analysisWriter.write(analysis, projectName);
                 }
             }
         } catch (IOException e) {

@@ -5,5 +5,5 @@ import io.integrityinspector.model.Analysis;
 import java.io.IOException;
 
 public interface AnalysisWriter {
-    void write(Analysis analysis, String name, String templateName) throws IOException;
+    void write(Analysis analysis, String name) throws IOException;
 }
